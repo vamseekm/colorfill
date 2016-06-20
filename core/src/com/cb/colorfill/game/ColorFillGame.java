@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cb.colorfill.screens.ColorBoardScreen;
+import com.cb.colorfill.screens.GameScreen;
 import com.cb.colorfill.screens.MenuScreen;
 
 public class ColorFillGame extends Game{
@@ -22,10 +23,8 @@ public class ColorFillGame extends Game{
 	public void create() {
 		font = new BitmapFont();
 		stage = new Stage(new FitViewport(GameData.WORLD_WIDTH, GameData.WORLD_HEIGHT));
-		//currentScreen = new MenuScreen(this);
-		currentScreen = new ColorBoardScreen(this, 8);
-		stage.addActor(currentScreen);
-		currentScreen.showScreen();
+		//currentScreen = new ColorBoardScreen(this, 8);
+        switchScreen(new MenuScreen(this));
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -34,19 +33,10 @@ public class ColorFillGame extends Game{
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 		Color brightColor = Color.WHITE;
-		//Color darkColor = Color.RED;
 		Color darkColor = GameData.BG_DARK_COLOR;
 
 		Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
 		Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
-		//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_STENCIL_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-		//Gdx.gl.glEnable(GL20.GL_BLEND);
-		//Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT  | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
 
 		ShapeRenderer shapeRenderer = GameData.SHAPE_RENDERER;
 		shapeRenderer.setProjectionMatrix(stage.getBatch().getProjectionMatrix());
@@ -79,4 +69,15 @@ public class ColorFillGame extends Game{
 	public void dispose() {
 		stage.dispose();
 	}
+
+    public void switchScreen(GameScreen newScreen) {
+        if (currentScreen != newScreen) {
+            if (currentScreen != null){
+                currentScreen.destroyScreen();
+            }
+            currentScreen = newScreen;
+            stage.addActor(currentScreen);
+            currentScreen.showScreen();
+        }
+    }
 }

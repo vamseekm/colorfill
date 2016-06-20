@@ -25,13 +25,17 @@ public class GameScreen extends Group {
         //System.out.println(parentAlpha);
         if (drawGrid) {
             batch.end();
+
             ShapeRenderer shapeRenderer = GameData.SHAPE_RENDERER;
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+            shapeRenderer.translate(getX(), getY(), 0);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.RED);
-            for (float x = 0; x <= GameData.WORLD_WIDTH; x += GameData.WORLD_WIDTH / 6) {
+            for (float x = 0; x <= GameData.WORLD_WIDTH; x += GameData.WORLD_WIDTH / 10) {
                 shapeRenderer.line(x, 0, x, GameData.WORLD_HEIGHT);
             }
-            for (float y = 0; y <= GameData.WORLD_HEIGHT; y += GameData.WORLD_HEIGHT / 6) {
+            for (float y = 0; y <= GameData.WORLD_HEIGHT; y += GameData.WORLD_HEIGHT / 10) {
                 shapeRenderer.line(0, y, GameData.WORLD_HEIGHT, y);
             }
             shapeRenderer.end();
@@ -46,5 +50,13 @@ public class GameScreen extends Group {
     public void showScreen(){
         System.out.println("fade in");
         addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f, Interpolation.exp5In)));
+    }
+
+    public void destroyScreen(){
+        addAction(Actions.sequence(Actions.fadeOut(1f, Interpolation.exp5Out), Actions.removeActor(this)));
+    }
+
+    public ColorFillGame getGame(){
+        return game;
     }
 }

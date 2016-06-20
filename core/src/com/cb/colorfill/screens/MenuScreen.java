@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.cb.colorfill.elements.GameButton;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameData;
@@ -16,14 +13,14 @@ import com.cb.colorfill.game.GameData;
  */
 public class MenuScreen extends GameScreen{
 
-    private final GameButton button;
+    private final GameButton playButton;
 
     public MenuScreen(ColorFillGame game){
         super(game);
         //drawGrid(true);
-        button = new GameButton("PLAY");
-        button.setPosition(GameData.WORLD_WIDTH/2 - button.getWidth()/2, GameData.WORLD_HEIGHT/2 - button.getHeight()/2);
-        addActor(button);
+        playButton = new GameButton("PLAY");
+        playButton.setPosition(GameData.WORLD_WIDTH/2 - playButton.getWidth()/2, GameData.WORLD_HEIGHT/2 - playButton.getHeight()/2);
+        addActor(playButton);
         setupEvents();
     }
 
@@ -42,8 +39,15 @@ public class MenuScreen extends GameScreen{
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 Actor actor = hit(x, y, true);
+                if(actor == playButton){
+                    startGame();
+                }
             }
         });
+    }
+
+    private void startGame() {
+        getGame().switchScreen(new ColorBoardScreen(getGame(), 8));
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.cb.colorfill.elements.ColorBox;
+import com.cb.colorfill.elements.ScoreLabel;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
@@ -21,15 +22,25 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     ColorBox[][] boxes;
     ColorBox[] controls;
     private int currentColorCode = -1;
-    private int currentMove;
+    //private int currentMove;
+    ScoreLabel scoreLabel;
 
     public ColorBoardScreen(ColorFillGame game, int boardSize) {
         super(game);
         this.boardSize = boardSize;
-        this.currentMove = 0;
+        //this.currentMove = 0;
         setupBoard();
         setupControls();
+        setupScore();
         setupInput();
+    }
+
+    private void setupScore() {
+        scoreLabel = new ScoreLabel();
+        float xPos = 0;
+        float yPos = bottomMargin()*1.5f + boxSize()*boardSize + scoreLabel.getHeight();
+        scoreLabel.setPosition(xPos, yPos);
+        addActor(scoreLabel);
     }
 
     private void setupInput() {
@@ -50,7 +61,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             return;
         }
         boardProcessed(false);
-        currentMove += 1;
+        scoreLabel.increaseMove();
         currentColorCode = colorCode;
         checkBox(0, 0, boxes[0][0].getColorCode(), colorCode, 1);
     }
@@ -141,6 +152,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+
+        /*
         System.out.println(parentAlpha);
         GameUtil.enableBlending();
         //System.out.println(parentAlpha);
@@ -154,5 +167,6 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         //System.out.println(glyphLayout.width+","+glyphLayout.height);
         scoreFont.draw(batch, text, xPos , yPos);
         GameUtil.disableBlending();
+        */
     }
 }
