@@ -1,26 +1,31 @@
-package com.cb.colorfill;
+package com.cb.colorfill.screens;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.cb.colorfill.elements.ColorBox;
+import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.game.ColorUtils;
+import com.cb.colorfill.game.GameData;
+import com.cb.colorfill.game.GameUtil;
 
 
-public class ColorBoard extends Group {
+public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private final int boardSize;
 
     ColorBox[][] boxes;
     ColorBox[] controls;
     private int currentColorCode = -1;
-    private int totalMoves;
     private int currentMove;
 
-    public ColorBoard(int boardSize, int totalMoves) {
+    public ColorBoardScreen(ColorFillGame game, int boardSize) {
+        super(game);
         this.boardSize = boardSize;
-        this.totalMoves = totalMoves;
         this.currentMove = 0;
         setupBoard();
         setupControls();
@@ -40,6 +45,7 @@ public class ColorBoard extends Group {
     }
 
     private void fill(int colorCode) {
+        currentColorCode = boxes[0][0].getColorCode();
         if (currentColorCode == colorCode) {
             return;
         }
@@ -58,7 +64,6 @@ public class ColorBoard extends Group {
     }
 
     private void checkBox(int row, int col, int colorCode, int replaceColorCode, int iter) {
-        System.out.println(row+", " + col + ", " + iter);
         if(boxes[row][col].isProcessed()){
             return;
         }
@@ -136,12 +141,18 @@ public class ColorBoard extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        String text = currentMove+"/"+totalMoves;
+        System.out.println(parentAlpha);
+        GameUtil.enableBlending();
+        //System.out.println(parentAlpha);
+        String text = currentMove + "";
         BitmapFont scoreFont = GameData.GetBigFont();
+        Color fontColor = GameData.FONT_COLOR;
+        scoreFont.setColor(fontColor.r, fontColor.g, fontColor.b, parentAlpha);
         glyphLayout.setText(scoreFont, text);
         float xPos = GameData.WORLD_WIDTH/2 - glyphLayout.width/2;
         float yPos = bottomMargin()*1.5f + boxSize()*boardSize + glyphLayout.height/2;
         //System.out.println(glyphLayout.width+","+glyphLayout.height);
         scoreFont.draw(batch, text, xPos , yPos);
+        GameUtil.disableBlending();
     }
 }

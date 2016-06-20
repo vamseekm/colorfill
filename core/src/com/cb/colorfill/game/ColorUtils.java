@@ -1,4 +1,4 @@
-package com.cb.colorfill;
+package com.cb.colorfill.game;
 
 import com.badlogic.gdx.graphics.Color;
 

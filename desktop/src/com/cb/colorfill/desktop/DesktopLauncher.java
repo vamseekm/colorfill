@@ -2,8 +2,8 @@ package com.cb.colorfill.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.cb.colorfill.GameData;
-import com.cb.colorfill.ColorFillGame;
+import com.cb.colorfill.game.GameData;
+import com.cb.colorfill.game.ColorFillGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

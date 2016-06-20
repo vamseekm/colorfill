@@ -3,7 +3,7 @@ package com.cb.colorfill.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.cb.colorfill.ColorFillGame;
+import com.cb.colorfill.game.ColorFillGame;
 
 public class HtmlLauncher extends GwtApplication {
 
