@@ -15,6 +15,9 @@ import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.game.GameUtil;
 
+import java.util.Queue;
+import java.util.Vector;
+
 
 public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private final int boardSize;
@@ -63,13 +66,82 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         boardProcessed(false);
         scoreLabel.increaseMove();
         currentColorCode = colorCode;
-        checkBox(0, 0, boxes[0][0].getColorCode(), colorCode, 1);
+        //checkBox(0, 0, boxes[0][0].getColorCode(), colorCode, 1);
+        checkBFS(0, 0, colorCode);
+    }
+
+    private void checkBFS(int orow, int ocol, int replaceColorCode) {
+        int colorCode = boxes[orow][ocol].getColorCode();
+        Vector<ColorBox> colorBoxes = new Vector<ColorBox>();
+        colorBoxes.add(boxes[orow][ocol]);
+        int atIndex = 0;
+        while(atIndex < colorBoxes.size()){
+            ColorBox box = colorBoxes.elementAt(atIndex);
+            if(box.isProcessed() == false){
+                int row = box.getRow();
+                int col = box.getCol();
+                System.out.println("Procesisng:" + row+"/"+col);
+                System.out.println("looking for cc:" + colorCode+" found " + box.getColorCode());
+                box.setProcessed(true);
+                if(box.getColorCode() == colorCode) {
+                    //box.setColorCode(replaceColorCode);
+                    box.bumpAnim(replaceColorCode);
+                    if (row < boardSize - 1 && boxes[row + 1][col].isProcessed() == false) {
+                        boxes[row+1][col].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row + 1][col]);
+                    }
+                    if (col < boardSize - 1 && boxes[row][col + 1].isProcessed() == false) {
+                        boxes[row][col+1].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row][col + 1]);
+                    }
+                    if (row > 0 && boxes[row - 1][col].isProcessed() == false) {
+                        boxes[row-1][col].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row - 1][col]);
+                    }
+                    if (col > 0 && boxes[row][col - 1].isProcessed() == false) {
+                        boxes[row][col-1].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row][col - 1]);
+                    }
+                }
+                if(box.getColorCode() == replaceColorCode){
+                    box.bumpAnim(replaceColorCode);
+
+                    if (row < boardSize - 1 && boxes[row + 1][col].isProcessed() == false && boxes[row+1][col].getColorCode() == replaceColorCode) {
+                        boxes[row+1][col].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row + 1][col]);
+                    }
+                    if (col < boardSize - 1 && boxes[row][col + 1].isProcessed() == false && boxes[row][col + 1].getColorCode() == replaceColorCode) {
+                        boxes[row][col+1].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row][col + 1]);
+                    }
+                    if (row > 0 && boxes[row - 1][col].isProcessed() == false && boxes[row - 1][col].getColorCode() == replaceColorCode) {
+                        boxes[row-1][col].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row - 1][col]);
+                    }
+                    if (col > 0 && boxes[row][col - 1].isProcessed() == false && boxes[row][col - 1].getColorCode() == replaceColorCode) {
+                        boxes[row][col-1].setIter(box.getIter()+1);
+                        colorBoxes.add(boxes[row][col - 1]);
+                    }
+                }
+            }
+            /*
+            for(int i=0;i<colorBoxes.size();i++){
+                ColorBox colorBox = colorBoxes.elementAt(i);
+                System.out.println("In queue:" + colorBox.getRow()+"/" + colorBox.getCol());
+            }*/
+            atIndex += 1;
+        }
+    }
+
+    private int distance(int x1, int y1, int x2, int y2){
+        return (int)Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
     }
 
     private void boardProcessed(boolean val){
         for(int row=0;row<boardSize;row++){
             for(int col=0;col<boardSize;col++){
                 boxes[row][col].setProcessed(val);
+                boxes[row][col].setIter(0);
             }
         }
     }
@@ -81,6 +153,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if (boxes[row][col].getColorCode() == colorCode){
             boxes[row][col].setColorCode(replaceColorCode);
             boxes[row][col].setProcessed(true);;
+            boxes[row][col].bumpAnim(replaceColorCode);
         }else{
             return;
         }
@@ -139,7 +212,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             for (int col = 0; col < boardSize; col++) {
                 float boxX = row * boxSize() + BOARD_BORDER_SIZE;
                 float boxY = (boardSize - col - 1) * boxSize() + BOARD_BORDER_SIZE;
-                boxes[row][col] = new ColorBox(ColorUtils.randomColorCode());
+                boxes[row][col] = new ColorBox(ColorUtils.randomColorCode(), row, col);
                 boxes[row][col].setBounds(boxX + boxBorderSize, boxY + boxBorderSize + yOffset, boxSize() - boxBorderSize * 2, boxSize() - boxBorderSize * 2);
                 boxes[row][col].setTouchable(Touchable.disabled);
                 addActor(boxes[row][col]);

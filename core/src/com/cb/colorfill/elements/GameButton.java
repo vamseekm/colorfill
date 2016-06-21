@@ -41,7 +41,7 @@ public class GameButton extends Actor {
     }
 
     private void pressDown(){
-        addAction(Actions.scaleTo(1.1f, 1.1f, 0.15f, Interpolation.exp5In));
+        addAction(Actions.scaleTo(0.95f, 0.95f, 0.15f, Interpolation.exp5In));
     }
 
     private void pressUp(){

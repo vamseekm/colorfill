@@ -48,7 +48,6 @@ public class GameScreen extends Group {
     }
 
     public void showScreen(){
-        System.out.println("fade in");
         addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f, Interpolation.exp5In)));
     }
 

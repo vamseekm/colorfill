@@ -5,18 +5,38 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.game.GameUtil;
 
 
 public class ColorBox extends Actor {
+    private final int row;
+    private final int col;
+    private int iter = 0;
     private int colorCode;
     private boolean processed = false;
+    private int newColorCode;
+    Action changeColor;
+
+    public ColorBox(int colorCode, int row, int col){
+        this.colorCode = colorCode;
+        this.row = row;
+        this.col = col;
+        changeColor = new Action(){
+            public boolean act(float delta){
+                setColorCode(newColorCode);
+                return true;
+            }
+        };
+    }
 
     public ColorBox(int colorCode){
-        this.colorCode = colorCode;
+        this(colorCode, -1, -1);
     }
 
     @Override
@@ -24,16 +44,25 @@ public class ColorBox extends Actor {
         super.draw(batch, parentAlpha);
         //System.out.println(parentAlpha);
         batch.end();
+        float scaleX = getScaleX();
+        float scaleY = getScaleY();
+        float width = getWidth();
+        float height = getHeight();
+        float scaledWidth = width*scaleX;
+        float scaledHeight = height*scaleY;
+        float posX = getX() -  (scaledWidth - width)/2;
+        float posY = getY() - (scaledHeight - height)/2;
+
         GameUtil.enableBlending();
         ShapeRenderer renderer = GameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.translate(getX(), getY(), 0);
+        //renderer.translate(getX() + posX, getY() + posY, 0);
         Color color = ColorUtils.getColorForCode(colorCode);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         //renderer.setColor(color);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
-        renderer.rect(0, 0, getWidth(), getHeight());
+        renderer.rect(posX, posY, scaledWidth, scaledHeight);
         renderer.end();
         GameUtil.disableBlending();
         batch.begin();
@@ -59,4 +88,28 @@ public class ColorBox extends Actor {
     public boolean isProcessed() {
         return processed;
     }
+
+    public void bumpAnim(final int newColorCode) {
+        float delay = 0.050f*iter;
+        this.newColorCode = newColorCode;
+
+        addAction(Actions.sequence(Actions.delay(delay), Actions.scaleTo(1.2f, 1.2f, 0.15f, Interpolation.exp5In), changeColor, Actions.scaleTo(1.0f, 1.0f, 0.15f, Interpolation.exp5Out)));
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setIter(int iter){
+        this.iter = iter;
+    }
+
+    public int getIter(){
+        return iter;
+    }
 }
+

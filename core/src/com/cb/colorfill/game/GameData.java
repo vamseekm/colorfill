@@ -42,7 +42,8 @@ public class GameData {
     }
 
     private static void generateFonts() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
         smallFont = generator.generateFont(generateParams(30f*WORLD_SCALE));
         bigFont = generator.generateFont(generateParams(40f*WORLD_SCALE));
         gameFont = generator.generateFont(generateParams(80*WORLD_SCALE));
