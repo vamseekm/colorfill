@@ -184,6 +184,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             float controlX = i * controlSize + BOARD_BORDER_SIZE;
             controls[i] = new ColorBox(getGame(), i);
             controls[i].setBounds(controlX + controlBorderSize, controlY + controlBorderSize, controlSize - controlBorderSize * 2, controlSize - controlBorderSize * 2);
+            controls[i].setDiamond(true);
             addActor(controls[i]);
         }
 
@@ -219,6 +220,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 addActor(boxes[row][col]);
             }
         }
+
+        boxes[0][0].setDiamond(true);
     }
 
     private static GlyphLayout glyphLayout = new GlyphLayout();

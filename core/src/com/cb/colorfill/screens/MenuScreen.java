@@ -47,7 +47,7 @@ public class MenuScreen extends GameScreen{
     }
 
     private void startGame() {
-        getGame().switchScreen(new ColorBoardScreen(getGame(), 8));
+        getGame().switchScreen(new ColorBoardScreen(getGame(), 9));
     }
 
     @Override

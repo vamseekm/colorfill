@@ -2,7 +2,6 @@ package com.cb.colorfill.game;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -44,9 +43,9 @@ public class GameData {
     private void generateFonts() {
         //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
-        smallFont = generator.generateFont(generateParams(30f*WORLD_SCALE));
-        bigFont = generator.generateFont(generateParams(40f*WORLD_SCALE));
-        gameFont = generator.generateFont(generateParams(80*WORLD_SCALE));
+        smallFont = generator.generateFont(generateParams(40f*WORLD_SCALE));
+        bigFont = generator.generateFont(generateParams(80f*WORLD_SCALE));
+        gameFont = generator.generateFont(generateParams(120*WORLD_SCALE));
         generator.dispose();
     }
 

@@ -22,6 +22,7 @@ public class ColorBox extends Actor {
     private int iter = 0;
     private int colorCode;
     private boolean processed = false;
+    private boolean diamond = false;
     private int newColorCode;
     Action changeColor;
 
@@ -63,9 +64,27 @@ public class ColorBox extends Actor {
         //renderer.translate(getX() + posX, getY() + posY, 0);
         Color color = game.colorUtils.getColorForCode(colorCode);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        //renderer.setColor(color);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
-        renderer.rect(posX, posY, scaledWidth, scaledHeight);
+        if(isDiamond()) {
+            renderer.triangle(
+                    //bottom
+                    posX + scaledWidth / 2, posY,
+                    //right
+                    posX + scaledWidth, posY + scaledHeight / 2,
+                    //top
+                    posX + scaledWidth / 2, posY + scaledHeight
+            );
+            renderer.triangle(
+                    //bottom
+                    posX + scaledWidth / 2, posY,
+                    //left
+                    posX, posY + scaledHeight / 2,
+                    //top
+                    posX + scaledWidth / 2, posY + scaledHeight
+            );
+        }else{
+            renderer.rect(posX, posY, scaledWidth, scaledHeight);
+        }
         renderer.end();
         GameUtil.disableBlending();
         batch.begin();
@@ -93,7 +112,7 @@ public class ColorBox extends Actor {
     }
 
     public void bumpAnim(final int newColorCode) {
-        float delay = 0.050f*iter;
+        float delay = 0.075f*iter;
         this.newColorCode = newColorCode;
 
         addAction(Actions.sequence(Actions.delay(delay), Actions.scaleTo(1.2f, 1.2f, 0.15f, Interpolation.exp5In), changeColor, Actions.scaleTo(1.0f, 1.0f, 0.15f, Interpolation.exp5Out)));
@@ -112,7 +131,36 @@ public class ColorBox extends Actor {
     }
 
     public int getIter(){
+
         return iter;
+    }
+
+    private float[] vertices;
+    private float[] getVertices(float x, float y, float width, float height){
+        if(vertices == null){
+            vertices = new float[8];
+        }
+        //bottom
+        vertices[0] = x + width/2;
+        vertices[1] = y;
+        //right
+        vertices[2] = x + width;
+        vertices[3] = y + height/2;
+        //top
+        vertices[4] = x + width/2;
+        vertices[5] = y + height;
+        //left
+        vertices[6] = x;
+        vertices[7] = y + height/2;
+        return vertices;
+    }
+
+    public void setDiamond(boolean diamond){
+        this.diamond = diamond;
+    }
+
+    public boolean isDiamond(){
+        return this.diamond;
     }
 }
 
