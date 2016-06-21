@@ -39,7 +39,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     }
 
     private void setupScore() {
-        scoreLabel = new ScoreLabel();
+        scoreLabel = new ScoreLabel(getGame());
         float xPos = 0;
         float yPos = bottomMargin()*1.5f + boxSize()*boardSize + scoreLabel.getHeight();
         scoreLabel.setPosition(xPos, yPos);
@@ -174,14 +174,15 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
 
 
     private void setupControls() {
-        int numColors = ColorUtils.getNumColors();
-        float controlSize = (GameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / numColors;
+        ColorFillGame game = getGame();
+        int numColors = game.colorUtils.getNumColors();
+        float controlSize = (game.gameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / numColors;
         float controlY = bottomMargin() / 2 - controlSize / 2;
         float controlBorderSize = controlSize * 0.1f;
         controls = new ColorBox[numColors];
         for (int i = 0; i < numColors; i++) {
             float controlX = i * controlSize + BOARD_BORDER_SIZE;
-            controls[i] = new ColorBox(i);
+            controls[i] = new ColorBox(getGame(), i);
             controls[i].setBounds(controlX + controlBorderSize, controlY + controlBorderSize, controlSize - controlBorderSize * 2, controlSize - controlBorderSize * 2);
             addActor(controls[i]);
         }
@@ -191,11 +192,11 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private static final int BOARD_BORDER_SIZE = 10;
 
     private float boxSize() {
-        return (GameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / boardSize;
+        return (getGame().gameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / boardSize;
     }
 
     private float bottomMargin() {
-        return (GameData.WORLD_HEIGHT - boardSize * boxSize()) / 2;
+        return (getGame().gameData.WORLD_HEIGHT - boardSize * boxSize()) / 2;
     }
 
     private float boxBorderSize() {
@@ -212,7 +213,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             for (int col = 0; col < boardSize; col++) {
                 float boxX = row * boxSize() + BOARD_BORDER_SIZE;
                 float boxY = (boardSize - col - 1) * boxSize() + BOARD_BORDER_SIZE;
-                boxes[row][col] = new ColorBox(ColorUtils.randomColorCode(), row, col);
+                boxes[row][col] = new ColorBox(getGame(), getGame().colorUtils.randomColorCode(), row, col);
                 boxes[row][col].setBounds(boxX + boxBorderSize, boxY + boxBorderSize + yOffset, boxSize() - boxBorderSize * 2, boxSize() - boxBorderSize * 2);
                 boxes[row][col].setTouchable(Touchable.disabled);
                 addActor(boxes[row][col]);

@@ -25,18 +25,18 @@ public class GameScreen extends Group {
         //System.out.println(parentAlpha);
         if (drawGrid) {
             batch.end();
-
-            ShapeRenderer shapeRenderer = GameData.SHAPE_RENDERER;
+            ColorFillGame game = getGame();
+            ShapeRenderer shapeRenderer = game.gameData.SHAPE_RENDERER;
             shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
             shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
             shapeRenderer.translate(getX(), getY(), 0);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.RED);
-            for (float x = 0; x <= GameData.WORLD_WIDTH; x += GameData.WORLD_WIDTH / 10) {
-                shapeRenderer.line(x, 0, x, GameData.WORLD_HEIGHT);
+            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 10) {
+                shapeRenderer.line(x, 0, x, game.gameData.WORLD_HEIGHT);
             }
-            for (float y = 0; y <= GameData.WORLD_HEIGHT; y += GameData.WORLD_HEIGHT / 10) {
-                shapeRenderer.line(0, y, GameData.WORLD_HEIGHT, y);
+            for (float y = 0; y <= game.gameData.WORLD_HEIGHT; y += game.gameData.WORLD_HEIGHT / 10) {
+                shapeRenderer.line(0, y, game.gameData.WORLD_HEIGHT, y);
             }
             shapeRenderer.end();
             batch.begin();

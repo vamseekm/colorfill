@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.game.GameUtil;
 
@@ -17,9 +18,12 @@ import com.cb.colorfill.game.GameUtil;
  */
 public class GameButton extends Actor {
     private final String text;
-    public GameButton(String text){
+    private final ColorFillGame game;
+
+    public GameButton(ColorFillGame game, String text){
+        this.game = game;
         this.text = text;
-        BitmapFont scoreFont = GameData.GetGameFont();
+        BitmapFont scoreFont = game.gameData.GetGameFont();
         glyphLayout.setText(scoreFont, text);
         setSize(glyphLayout.width, glyphLayout.height);
         setupEvents();
@@ -55,7 +59,7 @@ public class GameButton extends Actor {
 
         super.draw(batch, parentAlpha);
         GameUtil.enableBlending();
-        BitmapFont scoreFont = GameData.GetGameFont();
+        BitmapFont scoreFont = game.gameData.GetGameFont();
 
         float width        = getWidth();
         float height       = getHeight();
@@ -66,7 +70,7 @@ public class GameButton extends Actor {
         float yPos = getY() + scaledHeight;
 
         scoreFont.getData().setScale(getScaleX(), getScaleY());
-        Color fontColor = GameData.FONT_COLOR;
+        Color fontColor = game.gameData.FONT_COLOR;
         scoreFont.setColor(fontColor.r, fontColor.g, fontColor.b, parentAlpha);
         scoreFont.draw(batch, text, xPos, yPos);
         GameUtil.disableBlending();

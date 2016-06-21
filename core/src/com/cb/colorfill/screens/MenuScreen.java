@@ -18,8 +18,8 @@ public class MenuScreen extends GameScreen{
     public MenuScreen(ColorFillGame game){
         super(game);
         //drawGrid(true);
-        playButton = new GameButton("PLAY");
-        playButton.setPosition(GameData.WORLD_WIDTH/2 - playButton.getWidth()/2, GameData.WORLD_HEIGHT/2 - playButton.getHeight()/2);
+        playButton = new GameButton(game, "PLAY");
+        playButton.setPosition(game.gameData.WORLD_WIDTH/2 - playButton.getWidth()/2, game.gameData.WORLD_HEIGHT/2 - playButton.getHeight()/2);
         addActor(playButton);
         setupEvents();
     }

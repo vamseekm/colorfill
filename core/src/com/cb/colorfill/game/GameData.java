@@ -13,11 +13,11 @@ public class GameData {
     public static final float WORLD_SCALE = 0.75f;
     public static final float WORLD_WIDTH = 720f * WORLD_SCALE;
     public static final float WORLD_HEIGHT = 1280f * WORLD_SCALE;
-    public static ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
+    public ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
 
-    private static BitmapFont font;
+    private BitmapFont font;
 
-    public static BitmapFont xGetGameFont(){
+    public BitmapFont xGetGameFont(){
         if (font == null){
             font = new BitmapFont();
             font.setColor(new Color(0/255f, 1/255f, 51/255f, 1));
@@ -25,15 +25,15 @@ public class GameData {
         return font;
     }
 
-    private static BitmapFont smallFont;
-    private static BitmapFont bigFont;
-    private static BitmapFont gameFont;
+    private BitmapFont smallFont;
+    private BitmapFont bigFont;
+    private BitmapFont gameFont;
     //private static Color fontColor = new Color(128/255f, 128/255f, 150/255f, 1);
-    public static final Color FONT_COLOR = new Color(64*2.5f/255f, 64*2.5f/255f, 64*3.0f/255f, 1);
+    public final Color FONT_COLOR = new Color(64*2.5f/255f, 64*2.5f/255f, 64*3.0f/255f, 1);
     //public static final Color BG_DARK_COLOR = new Color(250/255f, 250/255f, 250/255f, 1);
-    public static final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
+    public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
 
-    private static FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size){
+    private FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size){
         FreeTypeFontGenerator.FreeTypeFontParameter smallFontParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
         smallFontParams.size = (int)size;
         smallFontParams.color = FONT_COLOR;
@@ -41,7 +41,7 @@ public class GameData {
         return smallFontParams;
     }
 
-    private static void generateFonts() {
+    private void generateFonts() {
         //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
         smallFont = generator.generateFont(generateParams(30f*WORLD_SCALE));
@@ -50,21 +50,21 @@ public class GameData {
         generator.dispose();
     }
 
-    public static BitmapFont GetSmallFont(){
+    public BitmapFont GetSmallFont(){
         if(smallFont == null){
             generateFonts();
         }
         return smallFont;
     }
 
-    public static BitmapFont GetBigFont(){
+    public BitmapFont GetBigFont(){
         if(bigFont == null){
             generateFonts();
         }
         return bigFont;
     }
 
-     public static BitmapFont GetGameFont(){
+     public BitmapFont GetGameFont(){
         if(gameFont == null){
             generateFonts();
         }

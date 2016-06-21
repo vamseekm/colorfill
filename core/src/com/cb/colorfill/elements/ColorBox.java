@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.game.GameUtil;
@@ -17,13 +18,15 @@ import com.cb.colorfill.game.GameUtil;
 public class ColorBox extends Actor {
     private final int row;
     private final int col;
+    private final ColorFillGame game;
     private int iter = 0;
     private int colorCode;
     private boolean processed = false;
     private int newColorCode;
     Action changeColor;
 
-    public ColorBox(int colorCode, int row, int col){
+    public ColorBox(ColorFillGame game, int colorCode, int row, int col){
+        this.game = game;
         this.colorCode = colorCode;
         this.row = row;
         this.col = col;
@@ -35,8 +38,8 @@ public class ColorBox extends Actor {
         };
     }
 
-    public ColorBox(int colorCode){
-        this(colorCode, -1, -1);
+    public ColorBox(ColorFillGame game, int colorCode){
+        this(game, colorCode, -1, -1);
     }
 
     @Override
@@ -54,11 +57,11 @@ public class ColorBox extends Actor {
         float posY = getY() - (scaledHeight - height)/2;
 
         GameUtil.enableBlending();
-        ShapeRenderer renderer = GameData.SHAPE_RENDERER;
+        ShapeRenderer renderer = game.gameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
         //renderer.translate(getX() + posX, getY() + posY, 0);
-        Color color = ColorUtils.getColorForCode(colorCode);
+        Color color = game.colorUtils.getColorForCode(colorCode);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         //renderer.setColor(color);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);

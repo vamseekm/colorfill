@@ -18,11 +18,16 @@ public class ColorFillGame extends Game{
 	Stage stage;
 	BitmapFont font;
 	com.cb.colorfill.screens.GameScreen currentScreen;
+	public ColorUtils colorUtils;
+	public GameData  gameData ;
 
 	@Override
 	public void create() {
+		colorUtils = new ColorUtils();
+		gameData = new GameData();
+		System.out.println("In create");
 		font = new BitmapFont();
-		stage = new Stage(new FitViewport(GameData.WORLD_WIDTH, GameData.WORLD_HEIGHT));
+		stage = new Stage(new FitViewport(gameData.WORLD_WIDTH, gameData.WORLD_HEIGHT));
 		//currentScreen = new ColorBoardScreen(this, 8);
         switchScreen(new MenuScreen(this));
 		Gdx.input.setInputProcessor(stage);
@@ -33,12 +38,12 @@ public class ColorFillGame extends Game{
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 		Color brightColor = Color.WHITE;
-		Color darkColor = GameData.BG_DARK_COLOR;
+		Color darkColor = gameData.BG_DARK_COLOR;
 
 		Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
 		Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
 
-		ShapeRenderer shapeRenderer = GameData.SHAPE_RENDERER;
+		ShapeRenderer shapeRenderer = gameData.SHAPE_RENDERER;
 		shapeRenderer.setProjectionMatrix(stage.getBatch().getProjectionMatrix());
         shapeRenderer.setTransformMatrix(stage.getBatch().getTransformMatrix());
         shapeRenderer.translate(0, 0, 0);
@@ -54,7 +59,7 @@ public class ColorFillGame extends Game{
 		stage.draw();
 		Batch batch = stage.getBatch();
 		batch.begin();
-		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, GameData.WORLD_HEIGHT);
+		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, gameData.WORLD_HEIGHT);
 		batch.end();
 
 		Gdx.gl.glDisable(GL20.GL_BLEND);
