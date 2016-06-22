@@ -1,21 +1,13 @@
 package com.cb.colorfill.screens;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.cb.colorfill.elements.ColorBox;
 import com.cb.colorfill.elements.ScoreLabel;
 import com.cb.colorfill.game.ColorFillGame;
-import com.cb.colorfill.game.ColorUtils;
-import com.cb.colorfill.game.GameData;
-import com.cb.colorfill.game.GameUtil;
 
-import java.util.Queue;
 import java.util.Vector;
 
 
@@ -27,10 +19,16 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private int currentColorCode = -1;
     //private int currentMove;
     ScoreLabel scoreLabel;
+    boolean gameOver = false;
+    boolean animating = false;
+    private int originRow;
+    private int originCol;
 
     public ColorBoardScreen(ColorFillGame game, int boardSize) {
         super(game);
         this.boardSize = boardSize;
+        this.originRow = 4;
+        this.originCol = 4;
         //this.currentMove = 0;
         setupBoard();
         setupControls();
@@ -57,35 +55,44 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             }
         });
     }
-
+    private boolean areWeInAnimation(){
+        return animating;
+    }
     private void fill(int colorCode) {
-        currentColorCode = boxes[0][0].getColorCode();
+        //Don't process input while we are currently doing fill animation.
+        if(areWeInAnimation()){
+            return;
+        }
+        currentColorCode = boxes[originRow][originCol].getColorCode();
+        //currently filled and user selected colors are same.
         if (currentColorCode == colorCode) {
             return;
         }
+
+        //start filling.
         boardProcessed(false);
         scoreLabel.increaseMove();
         currentColorCode = colorCode;
-        //checkBox(0, 0, boxes[0][0].getColorCode(), colorCode, 1);
-        checkBFS(0, 0, colorCode);
+        checkBFS(colorCode);
     }
 
-    private void checkBFS(int orow, int ocol, int replaceColorCode) {
-        int colorCode = boxes[orow][ocol].getColorCode();
+    private void checkBFS(int replaceColorCode) {
+        int colorCode = boxes[originRow][originCol].getColorCode();
         Vector<ColorBox> colorBoxes = new Vector<ColorBox>();
-        colorBoxes.add(boxes[orow][ocol]);
+        colorBoxes.add(boxes[originRow][originCol]);
         int atIndex = 0;
         while(atIndex < colorBoxes.size()){
             ColorBox box = colorBoxes.elementAt(atIndex);
             if(box.isProcessed() == false){
                 int row = box.getRow();
                 int col = box.getCol();
-                System.out.println("Procesisng:" + row+"/"+col);
-                System.out.println("looking for cc:" + colorCode+" found " + box.getColorCode());
                 box.setProcessed(true);
                 if(box.getColorCode() == colorCode) {
-                    //box.setColorCode(replaceColorCode);
-                    box.bumpAnim(replaceColorCode);
+                    if(box.getRow() == originRow && box.getCol() == originCol) {
+                        box.setColorCode(replaceColorCode);
+                    }else{
+                        box.bumpAnim(replaceColorCode);
+                    }
                     if (row < boardSize - 1 && boxes[row + 1][col].isProcessed() == false) {
                         boxes[row+1][col].setIter(box.getIter()+1);
                         colorBoxes.add(boxes[row + 1][col]);
@@ -124,17 +131,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                     }
                 }
             }
-            /*
-            for(int i=0;i<colorBoxes.size();i++){
-                ColorBox colorBox = colorBoxes.elementAt(i);
-                System.out.println("In queue:" + colorBox.getRow()+"/" + colorBox.getCol());
-            }*/
             atIndex += 1;
         }
-    }
-
-    private int distance(int x1, int y1, int x2, int y2){
-        return (int)Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
     }
 
     private void boardProcessed(boolean val){
@@ -146,33 +144,6 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         }
     }
 
-    private void checkBox(int row, int col, int colorCode, int replaceColorCode, int iter) {
-        if(boxes[row][col].isProcessed()){
-            return;
-        }
-        if (boxes[row][col].getColorCode() == colorCode){
-            boxes[row][col].setColorCode(replaceColorCode);
-            boxes[row][col].setProcessed(true);;
-            boxes[row][col].bumpAnim(replaceColorCode);
-        }else{
-            return;
-        }
-        if(row < boardSize - 1){
-            checkBox(row+1, col, colorCode, replaceColorCode, iter+1);
-        }
-        if(col < boardSize - 1){
-            checkBox(row, col+1, colorCode, replaceColorCode, iter+1);
-        }
-        if(row > 0){
-            checkBox(row-1, col, colorCode, replaceColorCode, iter+1);
-        }
-        if(col > 0){
-            checkBox(row, col-1, colorCode, replaceColorCode, iter+1);
-        }
-    }
-
-
-
     private void setupControls() {
         ColorFillGame game = getGame();
         int numColors = game.colorUtils.getNumColors();
@@ -182,9 +153,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         controls = new ColorBox[numColors];
         for (int i = 0; i < numColors; i++) {
             float controlX = i * controlSize + BOARD_BORDER_SIZE;
-            controls[i] = new ColorBox(getGame(), i);
+            controls[i] = new ColorBox(getGame(), ColorBox.ShapeType.DIAMOND, i);
             controls[i].setBounds(controlX + controlBorderSize, controlY + controlBorderSize, controlSize - controlBorderSize * 2, controlSize - controlBorderSize * 2);
-            controls[i].setDiamond(true);
             addActor(controls[i]);
         }
 
@@ -212,38 +182,37 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         for (int row = 0; row < boardSize; row++) {
             boxes[row] = new ColorBox[boardSize];
             for (int col = 0; col < boardSize; col++) {
-                float boxX = row * boxSize() + BOARD_BORDER_SIZE;
-                float boxY = (boardSize - col - 1) * boxSize() + BOARD_BORDER_SIZE;
-                boxes[row][col] = new ColorBox(getGame(), getGame().colorUtils.randomColorCode(), row, col);
+                float boxX = col * boxSize() + BOARD_BORDER_SIZE;
+                float boxY = (boardSize - row - 1) * boxSize() + BOARD_BORDER_SIZE;
+                boxes[row][col] = new ColorBox(getGame(), ColorBox.ShapeType.SQUARE, getGame().colorUtils.randomColorCode(), row, col);
                 boxes[row][col].setBounds(boxX + boxBorderSize, boxY + boxBorderSize + yOffset, boxSize() - boxBorderSize * 2, boxSize() - boxBorderSize * 2);
                 boxes[row][col].setTouchable(Touchable.disabled);
                 addActor(boxes[row][col]);
             }
         }
-
-        boxes[0][0].setDiamond(true);
+        boxes[originRow][originCol].setShape(ColorBox.ShapeType.DIAMOND);
+        boxes[originRow][originCol].foreverBump();
     }
 
-    private static GlyphLayout glyphLayout = new GlyphLayout();
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        int startingColor = boxes[originRow][originCol].getColorCode();
+        gameOver = true;
+        animating = false;
+        for(int row=0;row<boardSize;row++){
+            for(int col=0;col<boardSize;col++){
+                if(row != originRow && col != originCol){
+                    gameOver  = gameOver && boxes[row][col].getColorCode() == startingColor;
+                    animating = animating || boxes[row][col].getActions().size > 0;
+                }
+            }
+        }
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-
-        /*
-        System.out.println(parentAlpha);
-        GameUtil.enableBlending();
-        //System.out.println(parentAlpha);
-        String text = currentMove + "";
-        BitmapFont scoreFont = GameData.GetBigFont();
-        Color fontColor = GameData.FONT_COLOR;
-        scoreFont.setColor(fontColor.r, fontColor.g, fontColor.b, parentAlpha);
-        glyphLayout.setText(scoreFont, text);
-        float xPos = GameData.WORLD_WIDTH/2 - glyphLayout.width/2;
-        float yPos = bottomMargin()*1.5f + boxSize()*boardSize + glyphLayout.height/2;
-        //System.out.println(glyphLayout.width+","+glyphLayout.height);
-        scoreFont.draw(batch, text, xPos , yPos);
-        GameUtil.disableBlending();
-        */
     }
 }

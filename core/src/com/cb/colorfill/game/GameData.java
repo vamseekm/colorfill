@@ -28,7 +28,8 @@ public class GameData {
     private BitmapFont bigFont;
     private BitmapFont gameFont;
     //private static Color fontColor = new Color(128/255f, 128/255f, 150/255f, 1);
-    public final Color FONT_COLOR = new Color(64*2.5f/255f, 64*2.5f/255f, 64*3.0f/255f, 1);
+    //public final Color FONT_COLOR = new Color(64*2.5f/255f, 64*2.5f/255f, 64*3.0f/255f, 1);
+    public final Color FONT_COLOR = new Color(64*3f/255f, 64*3f/255f, 64*3.5f/255f, 1);
     //public static final Color BG_DARK_COLOR = new Color(250/255f, 250/255f, 250/255f, 1);
     public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
 
@@ -41,8 +42,8 @@ public class GameData {
     }
 
     private void generateFonts() {
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
         smallFont = generator.generateFont(generateParams(40f*WORLD_SCALE));
         bigFont = generator.generateFont(generateParams(80f*WORLD_SCALE));
         gameFont = generator.generateFont(generateParams(120*WORLD_SCALE));

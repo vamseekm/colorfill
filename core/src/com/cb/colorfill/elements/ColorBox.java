@@ -16,6 +16,11 @@ import com.cb.colorfill.game.GameUtil;
 
 
 public class ColorBox extends Actor {
+    public enum ShapeType {
+        DIAMOND,
+        SQUARE
+    }
+    private ShapeType shape;
     private final int row;
     private final int col;
     private final ColorFillGame game;
@@ -26,8 +31,9 @@ public class ColorBox extends Actor {
     private int newColorCode;
     Action changeColor;
 
-    public ColorBox(ColorFillGame game, int colorCode, int row, int col){
+    public ColorBox(ColorFillGame game, ShapeType shape, int colorCode, int row, int col){
         this.game = game;
+        this.shape = shape;
         this.colorCode = colorCode;
         this.row = row;
         this.col = col;
@@ -40,7 +46,10 @@ public class ColorBox extends Actor {
     }
 
     public ColorBox(ColorFillGame game, int colorCode){
-        this(game, colorCode, -1, -1);
+        this(game, ShapeType.SQUARE, colorCode, -1, -1);
+    }
+    public ColorBox(ColorFillGame game, ShapeType shape, int colorCode){
+        this(game, shape, colorCode, -1, -1);
     }
 
     @Override
@@ -65,7 +74,7 @@ public class ColorBox extends Actor {
         Color color = game.colorUtils.getColorForCode(colorCode);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
-        if(isDiamond()) {
+        if(shape == ShapeType.DIAMOND) {
             renderer.triangle(
                     //bottom
                     posX + scaledWidth / 2, posY,
@@ -82,7 +91,7 @@ public class ColorBox extends Actor {
                     //top
                     posX + scaledWidth / 2, posY + scaledHeight
             );
-        }else{
+        }else if (shape == ShapeType.SQUARE){
             renderer.rect(posX, posY, scaledWidth, scaledHeight);
         }
         renderer.end();
@@ -115,7 +124,14 @@ public class ColorBox extends Actor {
         float delay = 0.075f*iter;
         this.newColorCode = newColorCode;
 
-        addAction(Actions.sequence(Actions.delay(delay), Actions.scaleTo(1.2f, 1.2f, 0.15f, Interpolation.exp5In), changeColor, Actions.scaleTo(1.0f, 1.0f, 0.15f, Interpolation.exp5Out)));
+        addAction(
+            Actions.sequence(
+                Actions.delay(delay),
+                Actions.scaleTo(1+SCALE_VALUE, 1+SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                changeColor,
+                Actions.scaleTo(1.0f         , 1.0f         , BUMP_DURATION, Interpolation.exp10Out)
+            )
+        );
     }
 
     public int getRow() {
@@ -135,32 +151,25 @@ public class ColorBox extends Actor {
         return iter;
     }
 
-    private float[] vertices;
-    private float[] getVertices(float x, float y, float width, float height){
-        if(vertices == null){
-            vertices = new float[8];
-        }
-        //bottom
-        vertices[0] = x + width/2;
-        vertices[1] = y;
-        //right
-        vertices[2] = x + width;
-        vertices[3] = y + height/2;
-        //top
-        vertices[4] = x + width/2;
-        vertices[5] = y + height;
-        //left
-        vertices[6] = x;
-        vertices[7] = y + height/2;
-        return vertices;
+    private static final float BUMP_DURATION = 0.3f;
+    private static final float SCALE_VALUE = 0.2f;
+
+    public void foreverBump(){
+        addAction(
+            Actions.forever(
+                Actions.sequence(
+                    Actions.scaleTo(1 + SCALE_VALUE, 1 + SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                    Actions.scaleTo(1 - SCALE_VALUE, 1 - SCALE_VALUE, BUMP_DURATION, Interpolation.exp10Out),
+                    Actions.delay(BUMP_DURATION*4)
+                )
+            )
+        );
     }
 
-    public void setDiamond(boolean diamond){
-        this.diamond = diamond;
+
+    public void setShape(ShapeType shape){
+        this.shape = shape;
     }
 
-    public boolean isDiamond(){
-        return this.diamond;
-    }
 }
 
