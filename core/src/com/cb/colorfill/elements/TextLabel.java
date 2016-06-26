@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.cb.colorfill.game.ColorFillGame;
-import com.cb.colorfill.game.GameUtil;
+import com.cb.colorfill.game.GraphicsUtil;
 
 /**
  * Created by VamseeKrishna on 026, 26 Jun 2016.
@@ -34,7 +34,7 @@ public class TextLabel extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        GameUtil.enableBlending();
+        GraphicsUtil.enableBlending();
         BitmapFont scoreFont = game.gameData.GetGameFont();
 
         float width        = getWidth();
@@ -49,6 +49,6 @@ public class TextLabel extends Actor {
         //Color fontColor = game.gameData.FONT_COLOR;
         textFont.setColor(textColor.r, textColor.g, textColor.b, parentAlpha);
         textFont.draw(batch, text, xPos, yPos);
-        GameUtil.disableBlending();
+        GraphicsUtil.disableBlending();
     }
 }

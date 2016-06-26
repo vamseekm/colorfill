@@ -1,8 +1,6 @@
 package com.cb.colorfill.elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
@@ -12,9 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.game.ColorFillGame;
-import com.cb.colorfill.game.ColorUtils;
-import com.cb.colorfill.game.GameData;
-import com.cb.colorfill.game.GameUtil;
+import com.cb.colorfill.game.GraphicsUtil;
 
 
 public class ColorBox extends Actor {
@@ -91,7 +87,7 @@ public class ColorBox extends Actor {
         float posX = getX() -  (scaledWidth - width)/2;
         float posY = getY() - (scaledHeight - height)/2;
 
-        GameUtil.enableBlending();
+        GraphicsUtil.enableBlending();
         ShapeRenderer renderer = game.gameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
@@ -129,7 +125,7 @@ public class ColorBox extends Actor {
             renderer.rect(posX, posY, scaledWidth, scaledHeight);
         }
         renderer.end();
-        GameUtil.disableBlending();
+        GraphicsUtil.disableBlending();
         batch.begin();
     }
 

@@ -10,6 +10,8 @@ import com.cb.colorfill.elements.GameButton;
 import com.cb.colorfill.elements.TextLabel;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameData;
+import com.cb.colorfill.levels.Level;
+import com.cb.colorfill.levels.LevelEasy;
 
 /**
  * Created by VamseeKrishna on 020, 20 Jun 2016.
@@ -51,15 +53,15 @@ public class MenuScreen extends GameScreen{
                     System.out.println("Down:" + actor);
                     Group parent = actor.getParent();
                     if (parent == playButton) {
-                        startGame();
+                        startGame(new LevelEasy());
                     }
                 }
             }
         });
     }
 
-    private void startGame() {
-        getGame().switchScreen(new ColorBoardScreen(getGame(), 9));
+    private void startGame(Level level) {
+        getGame().switchScreen(new ColorBoardScreen(getGame(), level));
     }
 
     @Override

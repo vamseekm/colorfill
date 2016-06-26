@@ -1,20 +1,15 @@
 package com.cb.colorfill.elements;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
-import com.cb.colorfill.game.GameUtil;
 
 /**
  * Created by VamseeKrishna on 020, 20 Jun 2016.
@@ -62,27 +57,6 @@ public class GameButton extends Group {
 
     private static GlyphLayout glyphLayout = new GlyphLayout();
 
-        /*
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        GameUtil.enableBlending();
-        BitmapFont scoreFont = game.gameData.GetGameFont();
 
-        float width        = getWidth();
-        float height       = getHeight();
-        float scaledWidth  = width*getScaleX();
-        float scaledHeight = height*getScaleY();
-        float widthDiff    = scaledWidth - width;
-        float xPos = getX() -  widthDiff/2;
-        float yPos = getY() + scaledHeight;
-
-        scoreFont.getData().setScale(getScaleX(), getScaleY());
-        Color fontColor = game.gameData.FONT_COLOR;
-        scoreFont.setColor(fontColor.r, fontColor.g, fontColor.b, parentAlpha);
-        scoreFont.draw(batch, text, xPos, yPos);
-        GameUtil.disableBlending();
-    }
-        */
 }
 

@@ -12,7 +12,7 @@ public class ColorUtils {
     public static Color GREEN = RGBToColor(150, 227, 149);
     public static Color VIOLET = RGBToColor(154, 157, 253);
     public static Color PINK = RGBToColor(233, 164, 233) ;
-    private Color[] colors = new Color[]{
+    public static Color[] colors = new Color[]{
             RED,
             ORANGE,
             GREEN,
@@ -25,13 +25,12 @@ public class ColorUtils {
         return colors[colorCode];
     }
 
-    public int getNumColors(){
+    public static int getNumColors(){
         return colors.length;
     }
 
     public int randomColorCode(){
-        //int numColors = getNumColors();
-        int numColors = 2;
+        int numColors = getNumColors();
         return (int)Math.floor(Math.random()*numColors);
     }
 

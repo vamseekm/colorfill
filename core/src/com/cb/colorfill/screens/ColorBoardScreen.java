@@ -7,12 +7,19 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.cb.colorfill.elements.ColorBox;
 import com.cb.colorfill.elements.ScoreLabel;
 import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.levels.Level;
 
 import java.util.Vector;
 
 
+//forumua for max moves
+//    maxclick= Math.floor(25*((nrows+ncols)*ncolors)/((14+14)*6));
+
+
+
 public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private final int boardSize;
+    private final Level level;
 
     ColorBox[][] boxes;
     ColorBox[] controls;
@@ -24,11 +31,12 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private int originRow;
     private int originCol;
 
-    public ColorBoardScreen(ColorFillGame game, int boardSize) {
+    public ColorBoardScreen(ColorFillGame game, Level level) {
         super(game);
-        this.boardSize = boardSize;
-        this.originRow = 4;
-        this.originCol = 4;
+        this.level = level;
+        this.boardSize = level.getSize();
+        this.originRow = level.getOriginX();
+        this.originCol = level.getOriginY();
         //this.currentMove = 0;
         setupBoard();
         setupControls();
@@ -37,7 +45,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     }
 
     private void setupScore() {
-        scoreLabel = new ScoreLabel(getGame());
+        scoreLabel = new ScoreLabel(getGame(), level.getMoves());
         float xPos = 0;
         float yPos = bottomMargin()*1.5f + boxSize()*boardSize + scoreLabel.getHeight();
         scoreLabel.setPosition(xPos, yPos);
@@ -71,9 +79,9 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
 
         //start filling.
         boardProcessed(false);
-        scoreLabel.increaseMove();
         currentColorCode = colorCode;
         checkBFS(colorCode);
+        scoreLabel.doMove();
     }
 
     private void checkBFS(int replaceColorCode) {
