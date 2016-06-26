@@ -28,8 +28,10 @@ public class ColorFillGame extends Game{
 		System.out.println("In create");
 		font = new BitmapFont();
 		stage = new Stage(new FitViewport(gameData.WORLD_WIDTH, gameData.WORLD_HEIGHT));
-		//currentScreen = new ColorBoardScreen(this, 8);
+		//currentScreen = new ColorBoardScreen(this, 9);
+		//switchScreen(new ColorBoardScreen(this, 9));
         switchScreen(new MenuScreen(this));
+		//switchScreen(currentScreen);
 		Gdx.input.setInputProcessor(stage);
 	}
 

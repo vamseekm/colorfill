@@ -155,6 +155,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             float controlX = i * controlSize + BOARD_BORDER_SIZE;
             controls[i] = new ColorBox(getGame(), ColorBox.ShapeType.DIAMOND, i);
             controls[i].setBounds(controlX + controlBorderSize, controlY + controlBorderSize, controlSize - controlBorderSize * 2, controlSize - controlBorderSize * 2);
+            controls[i].setClickable(true);
             addActor(controls[i]);
         }
 
@@ -190,7 +191,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 addActor(boxes[row][col]);
             }
         }
-        boxes[originRow][originCol].setShape(ColorBox.ShapeType.DIAMOND);
+        boxes[originRow][originCol].setShape(ColorBox.ShapeType.STAR);
         boxes[originRow][originCol].foreverBump();
     }
 

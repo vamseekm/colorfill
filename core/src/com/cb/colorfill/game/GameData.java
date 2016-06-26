@@ -34,20 +34,29 @@ public class GameData {
     public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
 
     private FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size){
+        return generateParams(size, FONT_COLOR);
+    }
+
+    private FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size, Color textColor){
         FreeTypeFontGenerator.FreeTypeFontParameter smallFontParams = new FreeTypeFontGenerator.FreeTypeFontParameter();
         smallFontParams.size = (int)size;
-        smallFontParams.color = FONT_COLOR;
+        smallFontParams.color = textColor;
         smallFontParams.spaceX = 1;
         return smallFontParams;
     }
 
     private void generateFonts() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Light.ttf"));
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Light.ttf"));
-        smallFont = generator.generateFont(generateParams(40f*WORLD_SCALE));
-        bigFont = generator.generateFont(generateParams(80f*WORLD_SCALE));
-        gameFont = generator.generateFont(generateParams(120*WORLD_SCALE));
+        smallFont = generateFont(40, FONT_COLOR);
+        bigFont = generateFont(80, FONT_COLOR);
+        gameFont = generateFont(120, FONT_COLOR);
+    }
+
+    public BitmapFont generateFont(float size, Color textColor){
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Exo2-Light.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JosefinSans-Light.ttf"));
+        BitmapFont bitmapFont = generator.generateFont(generateParams(size * WORLD_SCALE, textColor));
         generator.dispose();
+        return bitmapFont;
     }
 
     public BitmapFont GetSmallFont(){
@@ -70,6 +79,7 @@ public class GameData {
         }
         return gameFont;
     }
-
+    public static final float BUMP_DURATION = 0.3f;
+    public static final float SCALE_VALUE = 0.2f;
 }
 
