@@ -15,6 +15,7 @@ public class ScoreLabel extends Actor {
     private int totalMoves;
     private String movesText;
     GlyphLayout glyphLayout;
+    private int move;
 
 
     public ScoreLabel(ColorFillGame game, int totalMoves){
@@ -52,5 +53,9 @@ public class ScoreLabel extends Actor {
         scoreFont.setColor(fontColor.r, fontColor.g, fontColor.b, parentAlpha);
         scoreFont.draw(batch, movesText, xPos , yPos);
         GraphicsUtil.disableBlending();
+    }
+
+    public int getRemainingMoves () {
+        return totalMoves;
     }
 }

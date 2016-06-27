@@ -1,7 +1,6 @@
 package com.cb.colorfill.screens;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +10,7 @@ import com.cb.colorfill.elements.TextLabel;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.levels.Level;
-import com.cb.colorfill.levels.LevelEasy;
+import com.cb.colorfill.levels.classic.LevelEasy;
 
 /**
  * Created by VamseeKrishna on 020, 20 Jun 2016.

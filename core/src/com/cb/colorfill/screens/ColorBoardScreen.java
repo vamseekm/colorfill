@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.cb.colorfill.elements.ColorBox;
 import com.cb.colorfill.elements.ScoreLabel;
 import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.game.GameUtil;
 import com.cb.colorfill.levels.Level;
 
 import java.util.Vector;
@@ -223,5 +224,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        if(!animating && false){
+            GameUtil.saveScreenshot(scoreLabel.getRemainingMoves());
+        }
     }
 }
