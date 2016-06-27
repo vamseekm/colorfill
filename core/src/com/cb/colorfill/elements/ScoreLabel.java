@@ -34,7 +34,6 @@ public class ScoreLabel extends Actor {
         movesText = totalMoves + "";
     }
 
-
     public void doMove(){
         totalMoves -= 1;
         updateMovesText();
