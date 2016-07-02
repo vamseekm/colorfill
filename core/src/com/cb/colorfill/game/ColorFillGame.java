@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.cb.colorfill.screens.ColorBoardScreen;
 import com.cb.colorfill.screens.GameScreen;
 import com.cb.colorfill.screens.MenuScreen;
+import com.cb.colorfill.screens.TestScreen;
 
 public class ColorFillGame extends Game{
 
@@ -20,41 +22,38 @@ public class ColorFillGame extends Game{
 	com.cb.colorfill.screens.GameScreen currentScreen;
 	public ColorUtils colorUtils;
 	public GameData  gameData ;
+	private Texture bg;
 
 	@Override
 	public void create() {
 		colorUtils = new ColorUtils();
 		gameData = new GameData();
-		System.out.println("In create");
+		bg = gameData.getRadialTexture();
 		font = new BitmapFont();
 		stage = new Stage(new FitViewport(gameData.WORLD_WIDTH, gameData.WORLD_HEIGHT));
 		//currentScreen = new ColorBoardScreen(this, 9);
 		//switchScreen(new ColorBoardScreen(this, 9));
         switchScreen(new MenuScreen(this));
+		//switchScreen(new TestScreen(this));
 		//switchScreen(currentScreen);
 		Gdx.input.setInputProcessor(stage);
 	}
 
-	@Override
-	public void render() {
+	public void clearBG(){
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
-		Color brightColor = Color.WHITE;
-		Color darkColor = gameData.BG_DARK_COLOR;
-
 		Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
 		Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
+		Batch batch = stage.getBatch();
+		batch.begin();
+		batch.draw(bg, 0, 0, screenWidth, screenHeight);
+		batch.end();
+	}
 
-		ShapeRenderer shapeRenderer = gameData.SHAPE_RENDERER;
-		shapeRenderer.setProjectionMatrix(stage.getBatch().getProjectionMatrix());
-        shapeRenderer.setTransformMatrix(stage.getBatch().getTransformMatrix());
-        shapeRenderer.translate(0, 0, 0);
-
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.rect(0, 0, screenWidth, screenHeight, darkColor, darkColor, brightColor, brightColor);
-
-		shapeRenderer.end();
-
+	@Override
+	public void render() {
+        super.render();
+		clearBG();
 		stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
 		float delta = Gdx.graphics.getDeltaTime();
 		stage.act(delta);

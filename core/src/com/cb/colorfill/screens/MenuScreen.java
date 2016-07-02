@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.cb.colorfill.elements.BGRadialGradient;
 import com.cb.colorfill.elements.GameButton;
 import com.cb.colorfill.elements.TextLabel;
 import com.cb.colorfill.game.ColorFillGame;
@@ -19,7 +20,6 @@ public class MenuScreen extends GameScreen{
 
     private final GameButton playButton;
     private final TextLabel titleLabel;
-
     public MenuScreen(ColorFillGame game){
         super(game);
         this.titleLabel = new TextLabel(game, "color fill", 100, game.gameData.FONT_COLOR);

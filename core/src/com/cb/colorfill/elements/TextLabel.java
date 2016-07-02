@@ -13,7 +13,7 @@ import com.cb.colorfill.game.GraphicsUtil;
  */
 public class TextLabel extends Actor {
 
-    private final String text;
+    private String text;
     private final int size;
     private final ColorFillGame game;
     private final Color textColor;
@@ -50,5 +50,15 @@ public class TextLabel extends Actor {
         textFont.setColor(textColor.r, textColor.g, textColor.b, parentAlpha);
         textFont.draw(batch, text, xPos, yPos);
         GraphicsUtil.disableBlending();
+    }
+
+    public void updateDimensions() {
+        glyphLayout.setText(textFont, text);
+        setSize(glyphLayout.width, glyphLayout.height);
+        //setPosition(-glyphLayout.width/2, glyphLayout.height/2);
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
