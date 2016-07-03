@@ -5,13 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.cb.colorfill.elements.BGRadialGradient;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.elements.GameButton;
 import com.cb.colorfill.elements.TextLabel;
 import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.levels.Level;
-import com.cb.colorfill.levels.classic.LevelEasy;
+import com.cb.colorfill.levels.classic.ClassicLevel;
+
+import java.util.Map;
 
 /**
  * Created by VamseeKrishna on 020, 20 Jun 2016.
@@ -20,16 +22,39 @@ public class MenuScreen extends GameScreen{
 
     private final GameButton playButton;
     private final TextLabel titleLabel;
-    public MenuScreen(ColorFillGame game){
+    private ClassicLevel.Difficulty difficulty;
+
+    private GameButton easyButton;
+    private GameButton normalButton;
+    private GameButton hardButton;
+
+    public MenuScreen(ColorFillGame game) {
         super(game);
         this.titleLabel = new TextLabel(game, "color fill", 100, game.gameData.FONT_COLOR);
-        titleLabel.setPosition(GameData.WORLD_WIDTH/2, GameData.WORLD_HEIGHT*4/5);
+        titleLabel.setPosition(GameData.WORLD_WIDTH / 2, GameData.WORLD_HEIGHT * 4 / 5);
         addActor(titleLabel);
         //drawGrid(true);
-        playButton = new GameButton(game, "play");
-        playButton.setPosition(game.gameData.WORLD_WIDTH/2, game.gameData.WORLD_HEIGHT/2);
+        /*
+        playButton = new GameButton(game, "play", 75);
+        playButton.setPosition(game.gameData.WORLD_WIDTH / 2, game.gameData.WORLD_HEIGHT / 2);
         addActor(playButton);
+        */
+        playButton = createButton("play", 75, 1f/2, 1f/2);
+
+        easyButton   = createButton("easy",   35, 1.0f*1/6, 1.0f/5);
+        normalButton = createButton("normal", 35, 1.0f*3/6, 1.0f/5);
+        hardButton   = createButton("hard",   35, 1.0f*5/6, 1.0f/5);
+        easyButton.setButtonSize(normalButton.getWidth());
+        hardButton.setButtonSize(normalButton.getWidth());
+        setDifficulty(ClassicLevel.Difficulty.EASY);
         setupEvents();
+    }
+
+    private GameButton createButton(String label, int fontSize, float x, float y) {
+        GameButton button = new GameButton(game, label, fontSize);
+        button.setPosition(x*game.gameData.WORLD_WIDTH, y*game.gameData.WORLD_HEIGHT);
+        addActor(button);
+        return button;
     }
 
     private void setupEvents() {
@@ -49,10 +74,17 @@ public class MenuScreen extends GameScreen{
                 super.touchUp(event, x, y, pointer, button);
                 Actor actor = hit(x, y, true);
                 if(actor != null) {
-                    System.out.println("Down:" + actor);
-                    Group parent = actor.getParent();
-                    if (parent == playButton) {
-                        startGame(new LevelEasy());
+                    if(actor.isDescendantOf(playButton)){
+                        startGame(ClassicLevel.createLevel(difficulty));
+                    }
+                    if(actor.isDescendantOf(easyButton)){
+                        setDifficulty(ClassicLevel.Difficulty.EASY);
+                    }
+                    if(actor.isDescendantOf(normalButton)){
+                        setDifficulty(ClassicLevel.Difficulty.NORMAL);
+                    }
+                    if(actor.isDescendantOf(hardButton)){
+                        setDifficulty(ClassicLevel.Difficulty.HARD);
                     }
                 }
             }
@@ -66,5 +98,20 @@ public class MenuScreen extends GameScreen{
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+    }
+
+    public void setDifficulty(ClassicLevel.Difficulty difficulty) {
+        this.difficulty = difficulty;
+        difficultyButtonApply(easyButton, difficulty == ClassicLevel.Difficulty.EASY);
+        difficultyButtonApply(normalButton, difficulty == ClassicLevel.Difficulty.NORMAL);
+        difficultyButtonApply(hardButton, difficulty == ClassicLevel.Difficulty.HARD);
+    }
+
+    private void difficultyButtonApply(GameButton button, boolean val) {
+        if(val){
+            button.addAction(Actions.alpha(1.0f, 1f));
+        }else{
+            button.addAction(Actions.alpha(0.8f, 1f));
+        }
     }
 }

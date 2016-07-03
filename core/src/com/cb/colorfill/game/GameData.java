@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -16,7 +15,6 @@ public class GameData {
     public static final float WORLD_WIDTH = 720f * WORLD_SCALE;
     public static final float WORLD_HEIGHT = 1280f * WORLD_SCALE;
     public ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
-    public PolygonSpriteBatch POLY_SPRITE_BATCH = new PolygonSpriteBatch();
 
     private BitmapFont font;
 
@@ -31,10 +29,7 @@ public class GameData {
     private BitmapFont smallFont;
     private BitmapFont bigFont;
     private BitmapFont gameFont;
-    //private static Color fontColor = new Color(128/255f, 128/255f, 150/255f, 1);
-    //public final Color FONT_COLOR = new Color(64*2.5f/255f, 64*2.5f/255f, 64*3.0f/255f, 1);
     public final Color FONT_COLOR = new Color(64*3f/255f, 64*3f/255f, 64*3.5f/255f, 1);
-    //public static final Color BG_DARK_COLOR = new Color(250/255f, 250/255f, 250/255f, 1);
     public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
 
     private FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size){
@@ -56,7 +51,6 @@ public class GameData {
     }
 
     public BitmapFont generateFont(float size, Color textColor){
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Exo2-Light.ttf"));
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JosefinSans-Light.ttf"));
         BitmapFont bitmapFont = generator.generateFont(generateParams(size * WORLD_SCALE, textColor));
         generator.dispose();

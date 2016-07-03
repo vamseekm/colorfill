@@ -19,16 +19,21 @@ public class GameButton extends Group {
     private final TextLabel buttonText;
     private ColorBox buttonBackground;
 
-    public GameButton(ColorFillGame game, String text){
+    public GameButton(ColorFillGame game, String text, int fontSize){
         this.game = game;
         buttonBackground = new ColorBox(game, ColorBox.ShapeType.DIAMOND, ColorUtils.VIOLET, -1, -1);
-        this.buttonText = new TextLabel(game, "play", 75,Color.WHITE);
+        this.buttonText = new TextLabel(game, text, fontSize,Color.WHITE);
         addActor(buttonBackground);
         addActor(buttonText);
         float buttonSize = buttonText.getWidth()*2f;
         buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
         setSize(buttonSize, buttonSize);
         setupEvents();
+    }
+
+    public void setButtonSize(float buttonSize) {
+        buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
+        setSize(buttonSize, buttonSize);
     }
 
     private void setupEvents() {

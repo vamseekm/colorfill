@@ -36,18 +36,6 @@ public class ColorBox extends Actor {
     public ColorBox(ColorFillGame game, ShapeType shape, int colorCode, int row, int col){
         this(game, shape, game.colorUtils.getColorForCode(colorCode), row, col);
         this.colorCode = colorCode;
-        /*
-        this.game = game;
-        this.shape = shape;
-        this.colorCode = colorCode;
-        this.row = row;
-        this.col = col;
-        changeColor = new Action(){
-            public boolean act(float delta){
-                setColorCode(newColorCode);
-                return true;
-            }
-        };*/
     }
 
     public ColorBox(ColorFillGame game, int colorCode){
@@ -76,7 +64,6 @@ public class ColorBox extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        //System.out.println(parentAlpha);
         batch.end();
         float scaleX = getScaleX();
         float scaleY = getScaleY();
@@ -91,8 +78,6 @@ public class ColorBox extends Actor {
         ShapeRenderer renderer = game.gameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        //renderer.translate(getX() + posX, getY() + posY, 0);
-        //Color color = game.colorUtils.getColorForCode(colorCode);
         Color color = buttonColor;
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
