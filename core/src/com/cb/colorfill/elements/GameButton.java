@@ -11,10 +11,45 @@ import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
 
+import java.util.Calendar;
+
 /**
  * Created by VamseeKrishna on 020, 20 Jun 2016.
  */
 public class GameButton extends Group {
+    public static class Builder {
+        private String text;
+        private int fontSize;
+        private float x = 0;
+        private float y = 0;
+
+        public Builder setText(String text){
+            this.text = text;
+            return this;
+        }
+
+        public Builder setFontSize(int fontSize){
+            this.fontSize = fontSize;
+            return this;
+        }
+
+        public GameButton build(ColorFillGame game){
+            GameButton gameButton = new GameButton(game, text, fontSize);
+            gameButton.setPosition(x, y);
+            return gameButton;
+        }
+
+
+        public Builder setPosition(float x, float y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+    }
+
+    public static Builder Builder(){
+        return new Builder();
+    }
     private final ColorFillGame game;
     private final TextLabel buttonText;
     private ColorBox buttonBackground;

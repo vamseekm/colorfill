@@ -219,6 +219,16 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 }
             }
         }
+        System.out.println("Animating:" + animating);
+        if(!animating){
+            if(gameOver){
+                System.out.println("won");
+            }else{
+                if(scoreLabel.getRemainingMoves() == 0){
+                    System.out.println("fail");
+                }
+            }
+        }
     }
 
     @Override

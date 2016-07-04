@@ -33,26 +33,22 @@ public class MenuScreen extends GameScreen{
         this.titleLabel = new TextLabel(game, "color fill", 100, game.gameData.FONT_COLOR);
         titleLabel.setPosition(GameData.WORLD_WIDTH / 2, GameData.WORLD_HEIGHT * 4 / 5);
         addActor(titleLabel);
-        //drawGrid(true);
-        /*
-        playButton = new GameButton(game, "play", 75);
-        playButton.setPosition(game.gameData.WORLD_WIDTH / 2, game.gameData.WORLD_HEIGHT / 2);
-        addActor(playButton);
-        */
-        playButton = createButton("play", 75, 1f/2, 1f/2);
-
+        playButton   = createButton("play",   75, 1.0f/2,   1.0f/2);
         easyButton   = createButton("easy",   35, 1.0f*1/6, 1.0f/5);
         normalButton = createButton("normal", 35, 1.0f*3/6, 1.0f/5);
         hardButton   = createButton("hard",   35, 1.0f*5/6, 1.0f/5);
         easyButton.setButtonSize(normalButton.getWidth());
         hardButton.setButtonSize(normalButton.getWidth());
-        setDifficulty(ClassicLevel.Difficulty.EASY);
+        setDifficulty(ClassicLevel.Difficulty.NORMAL);
         setupEvents();
     }
 
     private GameButton createButton(String label, int fontSize, float x, float y) {
-        GameButton button = new GameButton(game, label, fontSize);
-        button.setPosition(x*game.gameData.WORLD_WIDTH, y*game.gameData.WORLD_HEIGHT);
+        GameButton button = GameButton.Builder()
+                .setFontSize(fontSize)
+                .setText(label)
+                .setPosition(x*game.gameData.WORLD_WIDTH, y*game.gameData.WORLD_HEIGHT)
+                .build(game);
         addActor(button);
         return button;
     }
