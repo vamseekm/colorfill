@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.game.ColorFillGame;
@@ -21,7 +22,6 @@ public class GameScreen extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
         //System.out.println(parentAlpha);
         if (drawGrid) {
             batch.end();
@@ -31,8 +31,9 @@ public class GameScreen extends Group {
             shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
             shapeRenderer.translate(getX(), getY(), 0);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.RED);
-            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 10) {
+            Color color = Color.RED;
+            shapeRenderer.setColor(color.r, color.g, color.b, parentAlpha);
+            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 9) {
                 shapeRenderer.line(x, 0, x, game.gameData.WORLD_HEIGHT);
             }
             for (float y = 0; y <= game.gameData.WORLD_HEIGHT; y += game.gameData.WORLD_HEIGHT / 10) {
@@ -41,21 +42,28 @@ public class GameScreen extends Group {
             shapeRenderer.end();
             batch.begin();
         }
+        super.draw(batch, parentAlpha);
     }
 
     public void drawGrid(boolean val){
         this.drawGrid = val;
     }
 
+    private static final float TRANSITION_DURATION = 0.3f;
+
     public void showScreen(){
-        addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f, Interpolation.exp5In)));
+        addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(TRANSITION_DURATION, Interpolation.exp5In)));
     }
 
     public void destroyScreen(){
-        addAction(Actions.sequence(Actions.fadeOut(1f, Interpolation.exp5Out), Actions.removeActor(this)));
+        addAction(Actions.sequence(Actions.fadeOut(TRANSITION_DURATION, Interpolation.exp5Out), Actions.removeActor(this)));
     }
 
     public ColorFillGame getGame(){
         return game;
+    }
+
+    public void setGridPosition(Actor actor, float x, float y) {
+        actor.setPosition(x*GameData.WORLD_WIDTH, y*GameData.WORLD_HEIGHT);
     }
 }

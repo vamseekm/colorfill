@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GraphicsUtil;
 
 
@@ -51,9 +52,10 @@ public class ColorBox extends Actor {
         this.game = game;
         this.shape = shape;
         this.buttonColor = buttonColor;
+        setColor(buttonColor);
         this.row = row;
         this.col = col;
-         changeColor = new Action(){
+        changeColor = new Action(){
             public boolean act(float delta){
                 setColorCode(newColorCode);
                 return true;
@@ -78,7 +80,7 @@ public class ColorBox extends Actor {
         ShapeRenderer renderer = game.gameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        Color color = buttonColor;
+        Color color = getColor();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
         if(shape == ShapeType.DIAMOND || shape == ShapeType.STAR) {
@@ -126,6 +128,7 @@ public class ColorBox extends Actor {
     public void setColorCode(int colorCode) {
         this.colorCode = colorCode;
         this.buttonColor = game.colorUtils.getColorForCode(colorCode);
+        //this.setColor(this.buttonColor);
     }
 
     public void setProcessed(boolean val){
@@ -142,10 +145,13 @@ public class ColorBox extends Actor {
 
         addAction(
             Actions.sequence(
-                Actions.delay(delay),
-                Actions.scaleTo(1+SCALE_VALUE, 1+SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
-                changeColor,
-                Actions.scaleTo(1.0f         , 1.0f         , BUMP_DURATION, Interpolation.exp10Out)
+                    Actions.delay(delay),
+                    Actions.scaleTo(1+SCALE_VALUE, 1+SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                    Actions.parallel(
+                            changeColor,
+                            Actions.color(game.colorUtils.getColorForCode(newColorCode), BUMP_DURATION),
+                            Actions.scaleTo(1.0f         , 1.0f         , BUMP_DURATION, Interpolation.exp10Out)
+                    )
             )
         );
     }

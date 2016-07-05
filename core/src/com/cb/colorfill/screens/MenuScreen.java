@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.cb.colorfill.elements.GameButton;
 import com.cb.colorfill.elements.TextLabel;
 import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameData;
 import com.cb.colorfill.levels.Level;
 import com.cb.colorfill.levels.classic.ClassicLevel;
@@ -30,13 +31,13 @@ public class MenuScreen extends GameScreen{
 
     public MenuScreen(ColorFillGame game) {
         super(game);
-        this.titleLabel = new TextLabel(game, "color fill", 100, game.gameData.FONT_COLOR);
+        this.titleLabel = new TextLabel(game, "color fill", 90, game.gameData.FONT_COLOR);
         titleLabel.setPosition(GameData.WORLD_WIDTH / 2, GameData.WORLD_HEIGHT * 4 / 5);
         addActor(titleLabel);
-        playButton   = createButton("play",   75, 1.0f/2,   1.0f/2);
-        easyButton   = createButton("easy",   35, 1.0f*1/6, 1.0f/5);
-        normalButton = createButton("normal", 35, 1.0f*3/6, 1.0f/5);
-        hardButton   = createButton("hard",   35, 1.0f*5/6, 1.0f/5);
+        playButton   = createButton("play",   60, 1.0f/2,   1.0f/2);
+        easyButton   = createButton("easy",   30, 1.0f*2/10, 1.0f/5);
+        normalButton = createButton("normal", 30, 1.0f*5/10, 1.0f/5);
+        hardButton   = createButton("hard",   30, 1.0f*8/10, 1.0f/5);
         easyButton.setButtonSize(normalButton.getWidth());
         hardButton.setButtonSize(normalButton.getWidth());
         setDifficulty(ClassicLevel.Difficulty.NORMAL);
@@ -59,7 +60,6 @@ public class MenuScreen extends GameScreen{
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 if (hit(x, y, true) != null){
-                    System.out.println("hit ok");
                     return true;
                 }
                 return false;
@@ -104,10 +104,6 @@ public class MenuScreen extends GameScreen{
     }
 
     private void difficultyButtonApply(GameButton button, boolean val) {
-        if(val){
-            button.addAction(Actions.alpha(1.0f, 1f));
-        }else{
-            button.addAction(Actions.alpha(0.8f, 1f));
-        }
+        button.setPressed(val);
     }
 }

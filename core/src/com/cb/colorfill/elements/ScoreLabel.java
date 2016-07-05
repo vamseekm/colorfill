@@ -21,7 +21,7 @@ public class ScoreLabel extends Group {
         this.game = game;
         this.totalMoves = totalMoves;
         this.remainingMoves = totalMoves;
-        this.textLabel = new TextLabel(game, "", 80, game.gameData.FONT_COLOR);
+        this.textLabel = new TextLabel(game, "", 90, game.gameData.FONT_COLOR);
         setTouchable(Touchable.disabled);
         addActor(textLabel);
         updateMovesText();

@@ -219,16 +219,28 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 }
             }
         }
-        System.out.println("Animating:" + animating);
         if(!animating){
+            level.setRemainingMoves(scoreLabel.getRemainingMoves());
             if(gameOver){
-                System.out.println("won");
+                gameWon();
             }else{
                 if(scoreLabel.getRemainingMoves() == 0){
-                    System.out.println("fail");
+                    gameFail();
                 }
             }
         }
+    }
+
+    private void gameWon(){
+        level.setWon(true);
+        GameWonScreen gameWonScreen = new GameWonScreen(game, level);
+        game.switchScreen(gameWonScreen);
+    }
+
+    private void gameFail () {
+        level.setWon(true);
+        GameLostScreen gameoverScreen = new GameLostScreen(game, level);
+        game.switchScreen(gameoverScreen);
     }
 
     @Override

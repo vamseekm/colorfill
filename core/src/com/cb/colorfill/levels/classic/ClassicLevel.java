@@ -34,10 +34,12 @@ public class ClassicLevel extends Level {
             levelName = "classic.hard";
             totalMoves -= 2;
         }
+
         if (difficulty == Difficulty.EASY){
             levelName = "classic.easy";
             totalMoves += 2;
         }
+
         return new ClassicLevel(levelName, numColors, originX, originY, totalMoves);
     }
 

@@ -11,6 +11,8 @@ public abstract class Level {
     private final int size;
     private final int originX;
     private final int originY;
+    private int remainingMoves;
+    private boolean won = false;
 
     public Level(String levelName,  int size, int originX, int originY, int moves){
         this.levelName = levelName;
@@ -38,5 +40,17 @@ public abstract class Level {
 
     public int getOriginY() {
         return originY;
+    }
+
+    public void setRemainingMoves(int remainingMoves) {
+        this.remainingMoves = remainingMoves;
+    }
+
+    public void setWon(boolean val){
+        this.won = val;
+    }
+
+    public boolean isWon() {
+        return won;
     }
 }

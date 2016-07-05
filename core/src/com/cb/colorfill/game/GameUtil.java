@@ -21,7 +21,6 @@ public class GameUtil {
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.external(fileName), pixmap);
         pixmap.dispose();
-        System.out.println(Gdx.files.external(fileName).path());
     }
 
 }

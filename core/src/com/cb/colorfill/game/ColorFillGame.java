@@ -2,18 +2,17 @@ package com.cb.colorfill.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.cb.colorfill.screens.ColorBoardScreen;
+import com.cb.colorfill.levels.Level;
+import com.cb.colorfill.levels.classic.ClassicLevel;
 import com.cb.colorfill.screens.GameScreen;
-import com.cb.colorfill.screens.MenuScreen;
-import com.cb.colorfill.screens.TestScreen;
+import com.cb.colorfill.screens.GameLostScreen;
+import com.cb.colorfill.screens.GameWonScreen;
 
 public class ColorFillGame extends Game{
 
@@ -33,13 +32,31 @@ public class ColorFillGame extends Game{
 		stage = new Stage(new FitViewport(gameData.WORLD_WIDTH, gameData.WORLD_HEIGHT));
 		//currentScreen = new ColorBoardScreen(this, 9);
 		//switchScreen(new ColorBoardScreen(this, 9));
-        switchScreen(new MenuScreen(this));
+        //testGameLostScreen();
+        testGameWonScreen();
+        //switchScreen(new MenuScreen(this));
 		//switchScreen(new TestScreen(this));
 		//switchScreen(currentScreen);
 		Gdx.input.setInputProcessor(stage);
 	}
 
-	public void clearBG(){
+    private void testGameLostScreen() {
+        Level level = ClassicLevel.createLevel(ClassicLevel.Difficulty.EASY);
+        level.setWon(false);
+        level.setRemainingMoves(1);
+        GameLostScreen gameoverScreen = new GameLostScreen(this, level);
+        switchScreen(gameoverScreen);
+    }
+
+    private void testGameWonScreen() {
+        Level level = ClassicLevel.createLevel(ClassicLevel.Difficulty.EASY);
+        level.setWon(true);
+        level.setRemainingMoves(10);
+        GameWonScreen gameWonScreen = new GameWonScreen(this, level);
+        switchScreen(gameWonScreen);
+    }
+
+    public void clearBG(){
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 		Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
@@ -58,11 +75,12 @@ public class ColorFillGame extends Game{
 		float delta = Gdx.graphics.getDeltaTime();
 		stage.act(delta);
 		stage.draw();
+        /*
 		Batch batch = stage.getBatch();
 		batch.begin();
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, gameData.WORLD_HEIGHT);
 		batch.end();
-
+		*/
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 
@@ -78,12 +96,14 @@ public class ColorFillGame extends Game{
 
     public void switchScreen(GameScreen newScreen) {
         if (currentScreen != newScreen) {
-            if (currentScreen != null){
+			if (currentScreen != null){
                 currentScreen.destroyScreen();
             }
+            newScreen.getColor().a = 0f;
             currentScreen = newScreen;
             stage.addActor(currentScreen);
             currentScreen.showScreen();
+
         }
     }
 }

@@ -17,6 +17,12 @@ import java.util.Calendar;
  * Created by VamseeKrishna on 020, 20 Jun 2016.
  */
 public class GameButton extends Group {
+    private float buttonSize;
+
+    public float getButtonSize() {
+        return buttonSize;
+    }
+
     public static class Builder {
         private String text;
         private int fontSize;
@@ -60,13 +66,14 @@ public class GameButton extends Group {
         this.buttonText = new TextLabel(game, text, fontSize,Color.WHITE);
         addActor(buttonBackground);
         addActor(buttonText);
-        float buttonSize = buttonText.getWidth()*2f;
+        this.buttonSize = buttonText.getWidth()*2f;
         buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
-        setSize(buttonSize, buttonSize);
         setupEvents();
+        setButtonSize(buttonSize);
     }
 
     public void setButtonSize(float buttonSize) {
+        this.buttonSize = buttonSize;
         buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
         setSize(buttonSize, buttonSize);
     }
@@ -97,6 +104,23 @@ public class GameButton extends Group {
 
     private static GlyphLayout glyphLayout = new GlyphLayout();
 
+    public void setPressed(boolean val){
+        if(val){
+            buttonBackground.addAction(
+                    Actions.parallel(
+                        //Actions.alpha(1.0f, 1f),
+                        Actions.color(ColorUtils.VIOLET, GameData.BUMP_DURATION)
+                    )
+            );
 
+        }else{
+            buttonBackground.addAction(
+                    Actions.parallel(
+                        //Actions.alpha(0.8f, 1f),
+                        Actions.color(game.gameData.FONT_COLOR, GameData.BUMP_DURATION)
+                    )
+            );
+        }
+    }
 }
 
