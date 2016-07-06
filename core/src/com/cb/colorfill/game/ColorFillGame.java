@@ -13,6 +13,7 @@ import com.cb.colorfill.levels.classic.ClassicLevel;
 import com.cb.colorfill.screens.GameScreen;
 import com.cb.colorfill.screens.GameLostScreen;
 import com.cb.colorfill.screens.GameWonScreen;
+import com.cb.colorfill.screens.MenuScreen;
 
 public class ColorFillGame extends Game{
 
@@ -33,8 +34,8 @@ public class ColorFillGame extends Game{
 		//currentScreen = new ColorBoardScreen(this, 9);
 		//switchScreen(new ColorBoardScreen(this, 9));
         //testGameLostScreen();
-        testGameWonScreen();
-        //switchScreen(new MenuScreen(this));
+        //testGameWonScreen();
+        switchScreen(new MenuScreen(this));
 		//switchScreen(new TestScreen(this));
 		//switchScreen(currentScreen);
 		Gdx.input.setInputProcessor(stage);
@@ -97,6 +98,7 @@ public class ColorFillGame extends Game{
     public void switchScreen(GameScreen newScreen) {
         if (currentScreen != newScreen) {
 			if (currentScreen != null){
+                currentScreen.pause();
                 currentScreen.destroyScreen();
             }
             newScreen.getColor().a = 0f;

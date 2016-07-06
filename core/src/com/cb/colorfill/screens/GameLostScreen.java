@@ -19,17 +19,18 @@ public class GameLostScreen extends GameScreen {
 
     public GameLostScreen(ColorFillGame game, Level level) {
         super(game);
+        System.out.println("Game fail screen created");
         this.level = level;
 
         TextLabel outOfMovesLabel = new TextLabel(game, "out of moves", 90, game.gameData.FONT_COLOR);
         addActor(outOfMovesLabel);
         setGridPosition(outOfMovesLabel, 1f/2, 4f/5);
 
-        tryAgainButton = new GameButton(game, "play again", 45);
+        tryAgainButton = new GameButton(game, "play again", 45, ColorUtils.GREEN);
         addActor(tryAgainButton);
         setGridPosition(tryAgainButton, 1f/2, 1f/2);
 
-        this.menuButton = new GameButton(game, "menu", 45);
+        this.menuButton = new GameButton(game, "menu", 45, ColorUtils.VIOLET);
         addActor(menuButton);
         setGridPosition(menuButton, 1f/2, 1f/5);
 

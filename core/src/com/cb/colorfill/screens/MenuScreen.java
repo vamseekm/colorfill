@@ -1,5 +1,6 @@
 package com.cb.colorfill.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -34,20 +35,21 @@ public class MenuScreen extends GameScreen{
         this.titleLabel = new TextLabel(game, "color fill", 90, game.gameData.FONT_COLOR);
         titleLabel.setPosition(GameData.WORLD_WIDTH / 2, GameData.WORLD_HEIGHT * 4 / 5);
         addActor(titleLabel);
-        playButton   = createButton("play",   60, 1.0f/2,   1.0f/2);
-        easyButton   = createButton("easy",   30, 1.0f*2/10, 1.0f/5);
-        normalButton = createButton("normal", 30, 1.0f*5/10, 1.0f/5);
-        hardButton   = createButton("hard",   30, 1.0f*8/10, 1.0f/5);
+        playButton   = createButton("play",   60, 1.0f/2,    1.0f/2, ColorUtils.GREEN);
+        easyButton   = createButton("easy",   30, 1.0f*2/10, 1.0f/5, ColorUtils.VIOLET);
+        normalButton = createButton("normal", 30, 1.0f*5/10, 1.0f/5, ColorUtils.VIOLET);
+        hardButton   = createButton("hard",   30, 1.0f*8/10, 1.0f/5, ColorUtils.VIOLET);
         easyButton.setButtonSize(normalButton.getWidth());
         hardButton.setButtonSize(normalButton.getWidth());
         setDifficulty(ClassicLevel.Difficulty.NORMAL);
         setupEvents();
     }
 
-    private GameButton createButton(String label, int fontSize, float x, float y) {
+    private GameButton createButton(String label, int fontSize, float x, float y, Color color) {
         GameButton button = GameButton.Builder()
                 .setFontSize(fontSize)
                 .setText(label)
+                .setColor(color)
                 .setPosition(x*game.gameData.WORLD_WIDTH, y*game.gameData.WORLD_HEIGHT)
                 .build(game);
         addActor(button);

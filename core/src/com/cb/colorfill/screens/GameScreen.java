@@ -16,6 +16,8 @@ import com.cb.colorfill.game.GameData;
 public class GameScreen extends Group {
     ColorFillGame game;
     private boolean drawGrid = false;
+    private boolean screenPaused = false;
+
     public GameScreen(ColorFillGame game){
         this.game = game;
     }
@@ -65,5 +67,17 @@ public class GameScreen extends Group {
 
     public void setGridPosition(Actor actor, float x, float y) {
         actor.setPosition(x*GameData.WORLD_WIDTH, y*GameData.WORLD_HEIGHT);
+    }
+
+    public void pause(){
+        this.screenPaused = true;
+    }
+
+    public void resume(){
+        this.screenPaused = false;
+    }
+
+    public boolean isPaused(){
+        return screenPaused;
     }
 }

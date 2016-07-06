@@ -28,6 +28,7 @@ public class GameButton extends Group {
         private int fontSize;
         private float x = 0;
         private float y = 0;
+        private Color color = ColorUtils.VIOLET;
 
         public Builder setText(String text){
             this.text = text;
@@ -40,8 +41,9 @@ public class GameButton extends Group {
         }
 
         public GameButton build(ColorFillGame game){
-            GameButton gameButton = new GameButton(game, text, fontSize);
+            GameButton gameButton = new GameButton(game, text, fontSize, color);
             gameButton.setPosition(x, y);
+            gameButton.setColor(color);
             return gameButton;
         }
 
@@ -49,6 +51,11 @@ public class GameButton extends Group {
         public Builder setPosition(float x, float y) {
             this.x = x;
             this.y = y;
+            return this;
+        }
+
+        public Builder setColor(Color color){
+            this.color = color;
             return this;
         }
     }
@@ -60,9 +67,9 @@ public class GameButton extends Group {
     private final TextLabel buttonText;
     private ColorBox buttonBackground;
 
-    public GameButton(ColorFillGame game, String text, int fontSize){
+    public GameButton(ColorFillGame game, String text, int fontSize, Color color){
         this.game = game;
-        buttonBackground = new ColorBox(game, ColorBox.ShapeType.DIAMOND, ColorUtils.VIOLET, -1, -1);
+        buttonBackground = new ColorBox(game, ColorBox.ShapeType.DIAMOND, color, -1, -1);
         this.buttonText = new TextLabel(game, text, fontSize,Color.WHITE);
         addActor(buttonBackground);
         addActor(buttonText);
@@ -109,7 +116,7 @@ public class GameButton extends Group {
             buttonBackground.addAction(
                     Actions.parallel(
                         //Actions.alpha(1.0f, 1f),
-                        Actions.color(ColorUtils.VIOLET, GameData.BUMP_DURATION)
+                        Actions.color(getColor(), GameData.BUMP_DURATION)
                     )
             );
 

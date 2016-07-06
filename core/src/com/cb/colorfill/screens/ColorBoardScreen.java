@@ -208,9 +208,12 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if(isPaused()){
+            return;
+        }
         int startingColor = boxes[originRow][originCol].getColorCode();
-        gameOver = true;
         animating = false;
+        gameOver  = true;
         for(int row=0;row<boardSize;row++){
             for(int col=0;col<boardSize;col++){
                 if(row != originRow && col != originCol){
@@ -232,13 +235,15 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     }
 
     private void gameWon(){
+        System.out.println("Game won");
         level.setWon(true);
         GameWonScreen gameWonScreen = new GameWonScreen(game, level);
         game.switchScreen(gameWonScreen);
     }
 
     private void gameFail () {
-        level.setWon(true);
+        System.out.println("Game fail");
+        level.setWon(false);
         GameLostScreen gameoverScreen = new GameLostScreen(game, level);
         game.switchScreen(gameoverScreen);
     }

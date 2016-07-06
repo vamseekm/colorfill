@@ -10,6 +10,7 @@ public class GameWonScreen extends GameScreen {
 
     public GameWonScreen(ColorFillGame game, Level level){
         super(game);
+        System.out.println("Game won screen created.");
         this.level = level;
     }
 }
