@@ -141,14 +141,15 @@ public class ColorBox extends Actor {
 
     public void bumpAnim(final int newColorCode) {
         float delay = 0.075f*iter;
-        this.newColorCode = newColorCode;
+        //this.newColorCode = newColorCode;
+        setColorCode(newColorCode);
 
         addAction(
             Actions.sequence(
                     Actions.delay(delay),
                     Actions.scaleTo(1+SCALE_VALUE, 1+SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
                     Actions.parallel(
-                            changeColor,
+                            //changeColor,
                             Actions.color(game.colorUtils.getColorForCode(newColorCode), BUMP_DURATION),
                             Actions.scaleTo(1.0f         , 1.0f         , BUMP_DURATION, Interpolation.exp10Out)
                     )

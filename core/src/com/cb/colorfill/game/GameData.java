@@ -87,8 +87,8 @@ public class GameData {
     Texture bgRadialTexture;
     public Texture getRadialTexture(){
         if(bgRadialTexture == null) {
-            int width = (int)WORLD_WIDTH / 4;
-            int height = (int)WORLD_HEIGHT / 4;
+            int width = (int)WORLD_WIDTH;
+            int height = (int)WORLD_HEIGHT;
             Color centerColor = Color.WHITE;
             Color cornorColor = BG_DARK_COLOR;
             Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);

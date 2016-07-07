@@ -1,5 +1,7 @@
 package com.cb.colorfill.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -10,6 +12,7 @@ import com.cb.colorfill.game.ColorFillGame;
 import com.cb.colorfill.game.GameUtil;
 import com.cb.colorfill.levels.Level;
 
+import java.util.Date;
 import java.util.Vector;
 
 
@@ -225,13 +228,33 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if(!animating){
             level.setRemainingMoves(scoreLabel.getRemainingMoves());
             if(gameOver){
-                gameWon();
+                System.out.println("Game won");
+                writeBoardState();
+                pause();
+                return;
+                //gameWon();
             }else{
                 if(scoreLabel.getRemainingMoves() == 0){
-                    gameFail();
+                    System.out.println("Game fail");
+                    writeBoardState();
+                    pause();
+                    return;
+                    //gameFail();
                 }
             }
         }
+    }
+
+    private void writeBoardState() {
+        String state = "";
+        for(int row=0;row<boardSize;row++){
+            for(int col=0;col<boardSize;col++){
+                state += " " + boxes[row][col].getColorCode();
+            }
+            state += "\n";
+        }
+        FileHandle local = Gdx.files.local("state-" + (new Date().getTime() / 1000) + ".txt");
+        local.writeString(state, false);
     }
 
     private void gameWon(){
