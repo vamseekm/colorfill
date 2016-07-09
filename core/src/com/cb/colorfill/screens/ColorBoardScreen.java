@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.cb.colorfill.elements.ColorBox;
 import com.cb.colorfill.elements.ScoreLabel;
 import com.cb.colorfill.game.ColorFillGame;
+import com.cb.colorfill.game.ColorUtils;
 import com.cb.colorfill.game.GameUtil;
 import com.cb.colorfill.levels.Level;
 
@@ -28,12 +29,17 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     ColorBox[][] boxes;
     ColorBox[] controls;
     private int currentColorCode = -1;
-    //private int currentMove;
     ScoreLabel scoreLabel;
-    boolean gameOver = false;
-    boolean animating = false;
     private int originRow;
     private int originCol;
+
+    public int getOriginRow() {
+        return originRow;
+    }
+
+    public int getOriginCol() {
+        return originCol;
+    }
 
     public ColorBoardScreen(ColorFillGame game, Level level) {
         super(game);
@@ -41,7 +47,6 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         this.boardSize = level.getSize();
         this.originRow = level.getOriginX();
         this.originCol = level.getOriginY();
-        //this.currentMove = 0;
         setupBoard();
         setupControls();
         setupScore();
@@ -67,21 +72,16 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             }
         });
     }
-    private boolean areWeInAnimation(){
-        return animating;
-    }
+
     private void fill(int colorCode) {
-        //Don't process input while we are currently doing fill animation.
-        if(areWeInAnimation()){
+        if(isAnimating()){
             return;
         }
-        currentColorCode = boxes[originRow][originCol].getColorCode();
-        //currently filled and user selected colors are same.
+        currentColorCode = boxes[getOriginRow()][getOriginCol()].getColorCode();
         if (currentColorCode == colorCode) {
             return;
         }
 
-        //start filling.
         boardProcessed(false);
         currentColorCode = colorCode;
         checkBFS(colorCode);
@@ -89,9 +89,9 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     }
 
     private void checkBFS(int replaceColorCode) {
-        int colorCode = boxes[originRow][originCol].getColorCode();
+        int colorCode = boxes[originRow][getOriginCol()].getColorCode();
         Vector<ColorBox> colorBoxes = new Vector<ColorBox>();
-        colorBoxes.add(boxes[originRow][originCol]);
+        colorBoxes.add(boxes[originRow][getOriginCol()]);
         int atIndex = 0;
         while(atIndex < colorBoxes.size()){
             ColorBox box = colorBoxes.elementAt(atIndex);
@@ -100,7 +100,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 int col = box.getCol();
                 box.setProcessed(true);
                 if(box.getColorCode() == colorCode) {
-                    if(box.getRow() == originRow && box.getCol() == originCol) {
+                    if(isOrigin(row, col)){
                         box.setColorCode(replaceColorCode);
                     }else{
                         box.bumpAnim(replaceColorCode);
@@ -203,8 +203,21 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 addActor(boxes[row][col]);
             }
         }
-        boxes[originRow][originCol].setShape(ColorBox.ShapeType.STAR);
-        boxes[originRow][originCol].foreverBump();
+        boxes[getOriginRow()][getOriginCol()].setShape(ColorBox.ShapeType.STAR);
+        boxes[getOriginRow()][getOriginCol()].foreverBump();
+    }
+
+    private boolean isAnimating(){
+        boolean animating = false;
+        for(int row=0;row<boardSize;row++){
+            for(int col=0;col<boardSize;col++){
+                if(!isOrigin(row, col)){
+                //if(!(row == getOriginRow() && col == getOriginCol())){
+                    animating = animating || boxes[row][col].isAnimating();
+                }
+            }
+        }
+        return animating;
     }
 
 
@@ -214,20 +227,15 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if(isPaused()){
             return;
         }
-        int startingColor = boxes[originRow][originCol].getColorCode();
-        animating = false;
-        gameOver  = true;
-        for(int row=0;row<boardSize;row++){
-            for(int col=0;col<boardSize;col++){
-                if(row != originRow && col != originCol){
-                    gameOver  = gameOver && boxes[row][col].getColorCode() == startingColor;
-                    animating = animating || boxes[row][col].getActions().size > 0;
-                }
-            }
-        }
+        //int startingColor = boxes[originRow][originCol].getColorCode();
+        boolean animating = isAnimating();
+        int distinctColors = distinctColorsOnBoard();
+        boolean gameOver = distinctColors == 1;
+
         if(!animating){
             level.setRemainingMoves(scoreLabel.getRemainingMoves());
             if(gameOver){
+                dumpStats();
                 System.out.println("Game won");
                 writeBoardState();
                 pause();
@@ -235,6 +243,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 //gameWon();
             }else{
                 if(scoreLabel.getRemainingMoves() == 0){
+                    dumpStats();
                     System.out.println("Game fail");
                     writeBoardState();
                     pause();
@@ -243,6 +252,10 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
                 }
             }
         }
+    }
+
+    private void dumpStats() {
+        System.out.println("Remaining moves:" + scoreLabel.getRemainingMoves());
     }
 
     private void writeBoardState() {
@@ -274,8 +287,38 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if(!animating && false){
+        if(!isAnimating()){
             GameUtil.saveScreenshot(scoreLabel.getRemainingMoves());
         }
+    }
+
+    private int[] distinctColors;
+    private int distinctColorsOnBoard(){
+        int numColors = ColorUtils.getNumColors();
+        if(distinctColors == null){
+            distinctColors = new int[numColors];
+        }
+        for(int i=0;i<numColors;i++){
+            distinctColors[i] = 0;
+        }
+        for(int row=0;row<boardSize;row++){
+            for(int col=0;col<boardSize;col++){
+                if(!isOrigin(row, col)){
+                //if(!(row == getOriginRow() && col == getOriginCol())){
+                    distinctColors[boxes[row][col].getColorCode()] += 1;
+                }
+            }
+        }
+        int count = 0;
+        for(int i=0;i<numColors;i++){
+            if(distinctColors[i] > 0){
+                count += 1;
+            }
+        }
+        return count;
+    }
+
+    private boolean isOrigin(int row, int col){
+        return row == getOriginRow() && col == getOriginCol();
     }
 }

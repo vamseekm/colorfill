@@ -16,13 +16,17 @@ import com.cb.colorfill.game.GraphicsUtil;
 
 public class ColorBox extends Actor {
 
+    private final Action markAnimationCompelte;
     private Color buttonColor;
+
+
 
     public enum ShapeType {
         DIAMOND,
         SQUARE,
         STAR,
     }
+    private boolean animating = false;
     private ShapeType shape;
     private final int row;
     private final int col;
@@ -32,7 +36,6 @@ public class ColorBox extends Actor {
     private boolean processed = false;
     private boolean diamond = false;
     private int newColorCode;
-    Action changeColor;
 
     public ColorBox(ColorFillGame game, ShapeType shape, int colorCode, int row, int col){
         this(game, shape, game.colorUtils.getColorForCode(colorCode), row, col);
@@ -55,9 +58,10 @@ public class ColorBox extends Actor {
         setColor(buttonColor);
         this.row = row;
         this.col = col;
-        changeColor = new Action(){
-            public boolean act(float delta){
-                setColorCode(newColorCode);
+        this.markAnimationCompelte = new Action(){
+            @Override
+            public boolean act(float delta) {
+                setAnimating(false);
                 return true;
             }
         };
@@ -140,20 +144,19 @@ public class ColorBox extends Actor {
     }
 
     public void bumpAnim(final int newColorCode) {
-        float delay = 0.075f*iter;
-        //this.newColorCode = newColorCode;
+        float delay = 0.075f * iter;
+        this.setAnimating(true);
         setColorCode(newColorCode);
-
         addAction(
-            Actions.sequence(
-                    Actions.delay(delay),
-                    Actions.scaleTo(1+SCALE_VALUE, 1+SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
-                    Actions.parallel(
-                            //changeColor,
-                            Actions.color(game.colorUtils.getColorForCode(newColorCode), BUMP_DURATION),
-                            Actions.scaleTo(1.0f         , 1.0f         , BUMP_DURATION, Interpolation.exp10Out)
-                    )
-            )
+                Actions.sequence(
+                        Actions.delay(delay),
+                        Actions.scaleTo(1 + SCALE_VALUE, 1 + SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                        Actions.parallel(
+                                Actions.color(game.colorUtils.getColorForCode(newColorCode), BUMP_DURATION),
+                                Actions.scaleTo(1.0f, 1.0f, BUMP_DURATION, Interpolation.exp10Out)
+                        ),
+                        markAnimationCompelte
+                )
         );
     }
 
@@ -231,5 +234,12 @@ public class ColorBox extends Actor {
         return this.clickable;
     }
 
+    public void setAnimating(boolean animating) {
+        this.animating = animating;
+    }
+
+    public boolean isAnimating() {
+        return animating;
+    }
 }
 
