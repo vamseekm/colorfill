@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -68,9 +69,16 @@ public class ColorBox extends Actor {
     }
 
     @Override
+    public void act(float delta) {
+        super.act(delta);
+        setOrigin(getWidth()/2, getHeight()/2);
+    }
+
+    @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.end();
+        setOrigin(500, 500);
         float scaleX = getScaleX();
         float scaleY = getScaleY();
         float width = getWidth();
@@ -84,6 +92,10 @@ public class ColorBox extends Actor {
         ShapeRenderer renderer = game.gameData.SHAPE_RENDERER;
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
+        renderer.translate(posX + scaledWidth/2, posY + scaledHeight/2, 0);
+        posX = -scaledWidth/2;
+        posY = -scaledHeight/2;
+        renderer.rotate(0f, 0f, 1f, getRotation());
         Color color = getColor();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(color.r, color.g, color.b, parentAlpha);
@@ -185,6 +197,7 @@ public class ColorBox extends Actor {
             Actions.forever(
                 Actions.sequence(
                     Actions.scaleTo(1 + SCALE_VALUE, 1 + SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                    Actions.rotateBy(-360f/8, BUMP_DURATION*2, Interpolation.exp10),
                     Actions.scaleTo(1 - SCALE_VALUE, 1 - SCALE_VALUE, BUMP_DURATION, Interpolation.exp10Out),
                     Actions.delay(BUMP_DURATION*4)
                 )
