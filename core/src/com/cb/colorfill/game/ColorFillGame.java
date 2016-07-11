@@ -34,8 +34,8 @@ public class ColorFillGame extends Game{
 		//currentScreen = new ColorBoardScreen(this, 9);
 		//switchScreen(new ColorBoardScreen(this, 9));
         //testGameLostScreen();
-        //testGameWonScreen();
-        switchScreen(new MenuScreen(this));
+        testGameWonScreen();
+        //switchScreen(new MenuScreen(this));
 		//switchScreen(new TestScreen(this));
 		//switchScreen(currentScreen);
 		Gdx.input.setInputProcessor(stage);
@@ -52,7 +52,7 @@ public class ColorFillGame extends Game{
     private void testGameWonScreen() {
         Level level = ClassicLevel.createLevel(ClassicLevel.Difficulty.EASY);
         level.setWon(true);
-        level.setRemainingMoves(10);
+        level.setRemainingMoves(2);
         GameWonScreen gameWonScreen = new GameWonScreen(this, level);
         switchScreen(gameWonScreen);
     }
@@ -81,8 +81,8 @@ public class ColorFillGame extends Game{
 		batch.begin();
 		font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 0, gameData.WORLD_HEIGHT);
 		batch.end();
-		*/
 		Gdx.gl.glDisable(GL20.GL_BLEND);
+		*/
 	}
 
 	@Override

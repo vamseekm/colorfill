@@ -17,11 +17,6 @@ import java.util.Date;
 import java.util.Vector;
 
 
-//forumua for max moves
-//    maxclick= Math.floor(25*((nrows+ncols)*ncolors)/((14+14)*6));
-
-
-
 public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private final int boardSize;
     private final Level level;
@@ -227,7 +222,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if(isPaused()){
             return;
         }
-        //int startingColor = boxes[originRow][originCol].getColorCode();
+
         boolean animating = isAnimating();
         int distinctColors = distinctColorsOnBoard();
         boolean gameOver = distinctColors == 1;
@@ -235,27 +230,20 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if(!animating){
             level.setRemainingMoves(scoreLabel.getRemainingMoves());
             if(gameOver){
-                dumpStats();
-                System.out.println("Game won");
-                writeBoardState();
-                pause();
-                return;
-                //gameWon();
+                printDebug();
+                gameWon();
             }else{
                 if(scoreLabel.getRemainingMoves() == 0){
-                    dumpStats();
-                    System.out.println("Game fail");
-                    writeBoardState();
-                    pause();
-                    return;
-                    //gameFail();
+                    printDebug();
+                    gameFail();
                 }
             }
         }
     }
 
-    private void dumpStats() {
+    private void printDebug() {
         System.out.println("Remaining moves:" + scoreLabel.getRemainingMoves());
+        writeBoardState();
     }
 
     private void writeBoardState() {
@@ -271,14 +259,12 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     }
 
     private void gameWon(){
-        System.out.println("Game won");
         level.setWon(true);
         GameWonScreen gameWonScreen = new GameWonScreen(game, level);
         game.switchScreen(gameWonScreen);
     }
 
     private void gameFail () {
-        System.out.println("Game fail");
         level.setWon(false);
         GameLostScreen gameoverScreen = new GameLostScreen(game, level);
         game.switchScreen(gameoverScreen);

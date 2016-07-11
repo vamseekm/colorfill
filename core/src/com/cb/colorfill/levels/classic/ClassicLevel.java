@@ -15,13 +15,13 @@ public class ClassicLevel extends Level {
         HARD
     }
 
-    private ClassicLevel(String name, int numCors, int originX, int originY, int totalMoves ){
-        super(name, numCors, originX, originY, totalMoves);
+    private ClassicLevel(String name, int boardSize, int originX, int originY, int totalMoves ){
+        super(name, boardSize, originX, originY, totalMoves);
     }
 
     public static Level createLevel(Difficulty difficulty){
         int totalMoves = 15;
-        int numColors = 8;
+        int boardSize = 8;
         int originX = 0;
         int originY = 0;
         String levelName = "";
@@ -40,7 +40,7 @@ public class ClassicLevel extends Level {
             totalMoves += 2;
         }
 
-        return new ClassicLevel(levelName, numColors, originX, originY, totalMoves);
+        return new ClassicLevel(levelName, boardSize, originX, originY, totalMoves);
     }
 
 }
