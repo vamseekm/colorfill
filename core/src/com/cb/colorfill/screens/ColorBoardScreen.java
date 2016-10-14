@@ -28,6 +28,8 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private int originRow;
     private int originCol;
 
+    public static int MAX_ITERS = 0;
+
     public int getOriginRow() {
         return originRow;
     }
@@ -79,6 +81,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
 
         boardProcessed(false);
         currentColorCode = colorCode;
+        MAX_ITERS = 0;
         checkBFS(colorCode);
         scoreLabel.doMove();
     }
@@ -93,6 +96,9 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
             if(box.isProcessed() == false){
                 int row = box.getRow();
                 int col = box.getCol();
+                if (MAX_ITERS < boxes[row][col].getIter()){
+                    MAX_ITERS = boxes[row][col].getIter();
+                }
                 box.setProcessed(true);
                 if(box.getColorCode() == colorCode) {
                     if(isOrigin(row, col)){
@@ -230,11 +236,11 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         if(!animating){
             level.setRemainingMoves(scoreLabel.getRemainingMoves());
             if(gameOver){
-                printDebug();
+                //printDebug();
                 gameWon();
             }else{
                 if(scoreLabel.getRemainingMoves() == 0){
-                    printDebug();
+                    //printDebug();
                     gameFail();
                 }
             }

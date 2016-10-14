@@ -163,6 +163,13 @@ public class ColorBox extends Actor {
                 Actions.sequence(
                         Actions.delay(delay),
                         Actions.scaleTo(1 + SCALE_VALUE, 1 + SCALE_VALUE, BUMP_DURATION, Interpolation.exp10In),
+                        new Action(){
+                            @Override
+                            public boolean act(float delta) {
+                                game.playFlipForIter(iter);
+                                return true;
+                            }
+                        },
                         Actions.parallel(
                                 Actions.color(game.colorUtils.getColorForCode(newColorCode), BUMP_DURATION),
                                 Actions.scaleTo(1.0f, 1.0f, BUMP_DURATION, Interpolation.exp10Out)

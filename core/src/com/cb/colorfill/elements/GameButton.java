@@ -17,6 +17,7 @@ import java.util.Calendar;
  * Created by VamseeKrishna on 020, 20 Jun 2016.
  */
 public class GameButton extends Group {
+    private final int fontSize;
     private float buttonSize;
 
     public float getButtonSize() {
@@ -65,24 +66,36 @@ public class GameButton extends Group {
     }
     private final ColorFillGame game;
     private final TextLabel buttonText;
-    private ColorBox buttonBackground;
+    private Rectangle buttonBackground;
 
     public GameButton(ColorFillGame game, String text, int fontSize, Color color){
+        System.out.println(color);
         this.game = game;
-        buttonBackground = new ColorBox(game, ColorBox.ShapeType.DIAMOND, color, -1, -1);
+        this.fontSize = fontSize;
+        buttonBackground = new Rectangle(game, -1, -1, color);
         this.buttonText = new TextLabel(game, text, fontSize,Color.WHITE);
         addActor(buttonBackground);
         addActor(buttonText);
         this.buttonSize = buttonText.getWidth()*2f;
-        buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
+        buttonBackground.setBounds(0 - computeWidth()/2, 0 - computeHeight()/2, computeWidth(), computeHeight());
         setupEvents();
         setButtonSize(buttonSize);
     }
 
+    public float computeWidth(){
+        return buttonSize;
+    }
+
+    public float computeHeight(){
+        return fontSize*1.2f;
+    }
+
     public void setButtonSize(float buttonSize) {
         this.buttonSize = buttonSize;
-        buttonBackground.setBounds(0 - buttonSize/2, 0 - buttonSize/2, buttonSize, buttonSize);
-        setSize(buttonSize, buttonSize);
+        float width = computeWidth();
+        float height = computeHeight();
+        buttonBackground.setBounds(0 - width/2, 0 - height/2, width, height);
+        setSize(width, height);
     }
 
     private void setupEvents() {

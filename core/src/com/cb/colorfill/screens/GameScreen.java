@@ -15,7 +15,6 @@ import com.cb.colorfill.game.GameData;
  */
 public class GameScreen extends Group {
     ColorFillGame game;
-    private boolean drawGrid = false;
     private boolean screenPaused = false;
 
     public GameScreen(ColorFillGame game){
@@ -24,8 +23,7 @@ public class GameScreen extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //System.out.println(parentAlpha);
-        if (drawGrid) {
+        if (GameData.DRAW_GRID) {
             batch.end();
             ColorFillGame game = getGame();
             ShapeRenderer shapeRenderer = game.gameData.SHAPE_RENDERER;
@@ -35,7 +33,7 @@ public class GameScreen extends Group {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             Color color = Color.RED;
             shapeRenderer.setColor(color.r, color.g, color.b, parentAlpha);
-            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 9) {
+            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 10) {
                 shapeRenderer.line(x, 0, x, game.gameData.WORLD_HEIGHT);
             }
             for (float y = 0; y <= game.gameData.WORLD_HEIGHT; y += game.gameData.WORLD_HEIGHT / 10) {
@@ -47,9 +45,6 @@ public class GameScreen extends Group {
         super.draw(batch, parentAlpha);
     }
 
-    public void drawGrid(boolean val){
-        this.drawGrid = val;
-    }
 
     private static final float TRANSITION_DURATION = 0.3f;
 

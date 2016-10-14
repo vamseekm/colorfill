@@ -12,20 +12,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class GameData {
 
     public static final float BUMP_DURATION = 0.3f;
-    public static final float WORLD_SCALE = 0.5f;
+    public static final float WORLD_SCALE = 0.75f;
     public static final float WORLD_WIDTH = 720f * WORLD_SCALE;
     public static final float WORLD_HEIGHT = 1280f * WORLD_SCALE;
     public ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
 
+    public static final boolean DRAW_GRID = false;
+
     private BitmapFont font;
 
-    public BitmapFont xGetGameFont(){
-        if (font == null){
-            font = new BitmapFont();
-            font.setColor(new Color(0/255f, 1/255f, 51/255f, 1));
-        }
-        return font;
-    }
 
     private BitmapFont smallFont;
     private BitmapFont bigFont;

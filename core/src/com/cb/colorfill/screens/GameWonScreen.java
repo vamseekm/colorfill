@@ -19,7 +19,7 @@ public class GameWonScreen extends GameScreen {
         super(game);
         this.level = level;
         level.storeScore();
-        TextLabel wonLabel = new TextLabel(game, "You Won! in " + level.getUserMoves() + " Moves", 75, game.gameData.FONT_COLOR);
+        TextLabel wonLabel = new TextLabel(game, "You Win! in " + level.getUserMoves() + " Moves", 75, game.gameData.FONT_COLOR);
         addActor(wonLabel);
         setGridPosition(wonLabel, 1f/2, 4f/5);
 
