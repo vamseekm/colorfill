@@ -35,7 +35,6 @@ public class ColorFillGame extends Game{
         initGame();
         setupStage();
 		launchMenuScreen();
-        //launchTestScreen();
 	}
 
 
