@@ -1,5 +1,6 @@
 package com.cb.colorfill.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -108,5 +109,11 @@ public class MenuScreen extends GameScreen{
 
     private void difficultyButtonApply(GameButton button, boolean val) {
         button.setPressed(val);
+    }
+
+    @Override
+    public void backButtonPressed() {
+        super.backButtonPressed();
+        Gdx.app.exit();
     }
 }

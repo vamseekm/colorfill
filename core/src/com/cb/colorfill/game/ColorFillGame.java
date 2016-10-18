@@ -18,6 +18,7 @@ import com.cb.colorfill.screens.GameScreen;
 import com.cb.colorfill.screens.GameLostScreen;
 import com.cb.colorfill.screens.GameWonScreen;
 import com.cb.colorfill.screens.MenuScreen;
+import com.cb.colorfill.screens.TestScreen;
 
 public class ColorFillGame extends Game{
 
@@ -34,11 +35,14 @@ public class ColorFillGame extends Game{
         initGame();
         setupStage();
 		launchMenuScreen();
+        //launchTestScreen();
 	}
 
 
 
     private void initGame() {
+        Gdx.input.setCatchBackKey(true);
+
         colorUtils = new ColorUtils();
         gameData = new GameData();
         bg = gameData.getRadialTexture();
@@ -51,6 +55,9 @@ public class ColorFillGame extends Game{
         Gdx.input.setInputProcessor(stage);
     }
 
+    private void launchTestScreen() {
+        switchScreen(new TestScreen(this));
+    }
 
     private void launchMenuScreen() {
 		switchScreen(new MenuScreen(this));
@@ -120,15 +127,20 @@ public class ColorFillGame extends Game{
     }
 
     public void playFlipSound(float pitch){
+        return;
+        /*
         if(flipSound == null) {
             flipSound = Gdx.audio.newSound(Gdx.files.internal("audio/tong.wav"));
         }
         flipSound.play(0.8f, pitch, 0);
+        */
     }
 
     public int currentIter = 0;
 
     public void playFlipForIter(int iter){
+        return;
+        /*
         float maxIters  = 20f;
         if(maxIters < ColorBoardScreen.MAX_ITERS){
             maxIters = ColorBoardScreen.MAX_ITERS;
@@ -143,6 +155,7 @@ public class ColorFillGame extends Game{
         System.out.println("Pitch:" + pitch);
         playFlipSound(pitch);
         currentIter = iter;
+        */
     }
 
 }

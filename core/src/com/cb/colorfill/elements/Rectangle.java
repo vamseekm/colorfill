@@ -25,7 +25,8 @@ public class Rectangle extends Actor {
         this.game = game;
         this.setWidth(width);
         this.setHeight(height);
-        this.buttonColor = buttonColor;
+        setColor(buttonColor);
+        //this.buttonColor = buttonColor;
     }
 
     @Override

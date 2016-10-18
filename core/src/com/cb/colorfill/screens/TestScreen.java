@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.utils.ShortArray;
 import com.cb.colorfill.elements.BGRadialGradient;
+import com.cb.colorfill.elements.ColorBox;
 import com.cb.colorfill.game.ColorFillGame;
 
 /**
@@ -16,12 +17,11 @@ import com.cb.colorfill.game.ColorFillGame;
  */
 public class TestScreen extends GameScreen {
 
-    private final BGRadialGradient bg;
 
     public TestScreen(ColorFillGame game) {
         super(game);
-        bg = new BGRadialGradient(game);
-        bg.setBounds(0, 0, game.gameData.WORLD_WIDTH, game.gameData.WORLD_HEIGHT);
-        addActor(bg);
+        ColorBox colorBox = new ColorBox(getGame(), ColorBox.ShapeType.STAR, getGame().colorUtils.RED, 256, 256);
+        colorBox.setSize(512, 512);
+        addActor(colorBox);
     }
 }

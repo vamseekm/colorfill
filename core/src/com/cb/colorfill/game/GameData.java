@@ -17,6 +17,7 @@ public class GameData {
     public static final float WORLD_HEIGHT = 1280f * WORLD_SCALE;
     public ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
 
+    public static final boolean DEBUG = false;
     public static final boolean DRAW_GRID = false;
 
     private BitmapFont font;

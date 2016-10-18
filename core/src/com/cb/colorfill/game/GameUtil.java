@@ -14,7 +14,7 @@ public class GameUtil {
         return (int)Math.floor(25.0f*((rows+cols)*ncolors)/((14+14)*6));
     }
 
-    public static void saveScreenshot(int move){
+    public static void xsaveScreenshot(int move){
         String fileName = "move-" + move + ".png";
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);

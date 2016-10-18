@@ -50,6 +50,13 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         setupInput();
     }
 
+    @Override
+    public void backButtonPressed() {
+        super.backButtonPressed();
+        System.out.println("Back button pressed in color board screen");
+        game.switchScreen(new MenuScreen(game));
+    }
+
     private void setupScore() {
         scoreLabel = new ScoreLabel(getGame(), level.getMoves());
         float xPos = 0;
@@ -212,7 +219,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         boolean animating = false;
         for(int row=0;row<boardSize;row++){
             for(int col=0;col<boardSize;col++){
-                if(!isOrigin(row, col)){
+                if(!isOrigin(row, col) && animating == false){
                 //if(!(row == getOriginRow() && col == getOriginCol())){
                     animating = animating || boxes[row][col].isAnimating();
                 }
@@ -224,7 +231,9 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
 
     @Override
     public void act(float delta) {
+
         super.act(delta);
+
         if(isPaused()){
             return;
         }
@@ -247,22 +256,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
         }
     }
 
-    private void printDebug() {
-        System.out.println("Remaining moves:" + scoreLabel.getRemainingMoves());
-        writeBoardState();
-    }
 
-    private void writeBoardState() {
-        String state = "";
-        for(int row=0;row<boardSize;row++){
-            for(int col=0;col<boardSize;col++){
-                state += " " + boxes[row][col].getColorCode();
-            }
-            state += "\n";
-        }
-        FileHandle local = Gdx.files.local("state-" + (new Date().getTime() / 1000) + ".txt");
-        local.writeString(state, false);
-    }
 
     private void gameWon(){
         level.setWon(true);
@@ -279,9 +273,6 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if(!isAnimating()){
-            GameUtil.saveScreenshot(scoreLabel.getRemainingMoves());
-        }
     }
 
     private int[] distinctColors;
