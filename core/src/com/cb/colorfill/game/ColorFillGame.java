@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cb.colorfill.levels.Level;
 import com.cb.colorfill.levels.classic.ClassicLevel;
 import com.cb.colorfill.screens.ColorBoardScreen;
@@ -81,13 +82,24 @@ public class ColorFillGame extends Game{
     }
 
     public void clearBG(){
-		int screenWidth = Gdx.graphics.getWidth();
-		int screenHeight = Gdx.graphics.getHeight();
-		Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
+		//int screenWidth = Gdx.graphics.getWidth();
+		//int screenHeight = Gdx.graphics.getHeight();
+        /*
+        int screenWidth = (int)gameData.WORLD_WIDTH();
+        int screenHeight = (int)gameData.WORLD_HEIGHT();
+        if(Gdx.graphics.getWidth() > screenWidth){
+            screenWidth = Gdx.graphics.getWidth();
+        }
+        if(Gdx.graphics.getHeight() > screenHeight){
+            screenHeight = Gdx.graphics.getHeight();
+        }*/
+		//Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
+        Viewport viewport = stage.getViewport();
+        viewport.apply(true);
 		Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
 		Batch batch = stage.getBatch();
 		batch.begin();
-		batch.draw(bg, 0, 0, screenWidth, screenHeight);
+		batch.draw(bg, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 		batch.end();
 	}
 
@@ -96,6 +108,10 @@ public class ColorFillGame extends Game{
         super.render();
 		clearBG();
 		stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
+        //int screenWidth = (int)gameData.WORLD_WIDTH();
+        //int screenHeight = (int)gameData.WORLD_HEIGHT();
+        //stage.getViewport().update(screenWidth, screenHeight, true);
+        stage.getViewport().apply(true);
 		float delta = Gdx.graphics.getDeltaTime();
 		stage.act(delta);
 		stage.draw();
@@ -103,7 +119,8 @@ public class ColorFillGame extends Game{
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
+        stage.getViewport().apply(true);
+		//stage.getViewport().update(width, height, true);
 	}
 
 	@Override

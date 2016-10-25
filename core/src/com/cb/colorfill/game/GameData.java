@@ -13,7 +13,7 @@ public class GameData {
 
     public static final float BUMP_DURATION = 0.3f;
 
-    private static float _WORLD_SCALE = 1.5f;
+    private static float _WORLD_SCALE = (float)Gdx.graphics.getWidth()/720f;
     public static void setWorldScale(float scale){
         _WORLD_SCALE = scale;
     }
