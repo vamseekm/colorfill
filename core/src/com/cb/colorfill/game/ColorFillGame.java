@@ -126,20 +126,15 @@ public class ColorFillGame extends Game{
     }
 
     public void playFlipSound(float pitch){
-        return;
-        /*
         if(flipSound == null) {
             flipSound = Gdx.audio.newSound(Gdx.files.internal("audio/tong.wav"));
         }
         flipSound.play(0.8f, pitch, 0);
-        */
     }
 
     public int currentIter = 0;
 
     public void playFlipForIter(int iter){
-        return;
-        /*
         float maxIters  = 20f;
         if(maxIters < ColorBoardScreen.MAX_ITERS){
             maxIters = ColorBoardScreen.MAX_ITERS;
@@ -154,7 +149,6 @@ public class ColorFillGame extends Game{
         System.out.println("Pitch:" + pitch);
         playFlipSound(pitch);
         currentIter = iter;
-        */
     }
 
 }
