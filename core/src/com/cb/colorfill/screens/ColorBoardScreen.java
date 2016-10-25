@@ -53,7 +53,6 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     @Override
     public void backButtonPressed() {
         super.backButtonPressed();
-        System.out.println("Back button pressed in color board screen");
         game.switchScreen(new MenuScreen(game));
     }
 
@@ -167,7 +166,7 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private void setupControls() {
         ColorFillGame game = getGame();
         int numColors = game.colorUtils.getNumColors();
-        float controlSize = (game.gameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / numColors;
+        float controlSize = (game.gameData.WORLD_WIDTH() - BOARD_BORDER_SIZE * 2) / numColors;
         float controlY = bottomMargin() / 2 - controlSize / 2;
         float controlBorderSize = controlSize * 0.1f;
         controls = new ColorBox[numColors];
@@ -184,11 +183,11 @@ public class ColorBoardScreen extends com.cb.colorfill.screens.GameScreen {
     private static final int BOARD_BORDER_SIZE = 10;
 
     private float boxSize() {
-        return (getGame().gameData.WORLD_WIDTH - BOARD_BORDER_SIZE * 2) / boardSize;
+        return (getGame().gameData.WORLD_WIDTH() - BOARD_BORDER_SIZE * 2) / boardSize;
     }
 
     private float bottomMargin() {
-        return (getGame().gameData.WORLD_HEIGHT - boardSize * boxSize()) / 2;
+        return (getGame().gameData.WORLD_HEIGHT() - boardSize * boxSize()) / 2;
     }
 
     private float boxBorderSize() {

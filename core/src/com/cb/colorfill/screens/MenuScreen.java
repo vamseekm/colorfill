@@ -34,7 +34,7 @@ public class MenuScreen extends GameScreen{
     public MenuScreen(ColorFillGame game) {
         super(game);
         this.titleLabel = new TextLabel(game, "color fill", 90, game.gameData.FONT_COLOR);
-        titleLabel.setPosition(GameData.WORLD_WIDTH / 2, GameData.WORLD_HEIGHT * 4 / 5);
+        titleLabel.setPosition(GameData.WORLD_WIDTH() / 2, GameData.WORLD_HEIGHT() * 4 / 5);
         addActor(titleLabel);
         playButton   = createButton("play",   75, 1.0f/2,    1.0f/2, ColorUtils.RED);
         easyButton   = createButton("easy",   30, 1.0f*2/10, 1.0f/5, ColorUtils.VIOLET);
@@ -52,7 +52,7 @@ public class MenuScreen extends GameScreen{
                 .setFontSize(fontSize)
                 .setText(label)
                 .setColor(color)
-                .setPosition(x*game.gameData.WORLD_WIDTH, y*game.gameData.WORLD_HEIGHT)
+                .setPosition(x*game.gameData.WORLD_WIDTH(), y*game.gameData.WORLD_HEIGHT())
                 .build(game);
         addActor(button);
         return button;

@@ -12,9 +12,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class GameData {
 
     public static final float BUMP_DURATION = 0.3f;
-    public static final float WORLD_SCALE = 0.75f;
-    public static final float WORLD_WIDTH = 720f * WORLD_SCALE;
-    public static final float WORLD_HEIGHT = 1280f * WORLD_SCALE;
+
+    private static float _WORLD_SCALE = 1.5f;
+    public static void setWorldScale(float scale){
+        _WORLD_SCALE = scale;
+    }
+    public static float WORLD_SCALE(){
+        return _WORLD_SCALE;
+    }
+    //public static float WORLD_SCALE = 1.50f;
+    public static float WORLD_WIDTH(){
+      return 720f * WORLD_SCALE();
+    }
+
+    public static float WORLD_HEIGHT(){
+      return 1280f * WORLD_SCALE();
+    }
     public ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
 
     public static final boolean DEBUG = false;
@@ -51,7 +64,7 @@ public class GameData {
 
     public BitmapFont generateFont(float size, Color textColor){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/JosefinSans-Light.ttf"));
-        BitmapFont bitmapFont = generator.generateFont(generateParams(size * WORLD_SCALE, textColor));
+        BitmapFont bitmapFont = generator.generateFont(generateParams(size * WORLD_SCALE(), textColor));
         generator.dispose();
         return bitmapFont;
     }
@@ -83,8 +96,8 @@ public class GameData {
     Texture bgRadialTexture;
     public Texture getRadialTexture(){
         if(bgRadialTexture == null) {
-            int width = (int)WORLD_WIDTH;
-            int height = (int)WORLD_HEIGHT;
+            int width = (int)WORLD_WIDTH();
+            int height = (int)WORLD_HEIGHT();
             Color centerColor = Color.WHITE;
             Color cornorColor = BG_DARK_COLOR;
             Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);

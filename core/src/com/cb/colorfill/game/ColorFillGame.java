@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -32,6 +33,7 @@ public class ColorFillGame extends Game{
 
     @Override
 	public void create() {
+        FreeTypeFontGenerator.setMaxTextureSize(2048);
         initGame();
         setupStage();
 		launchMenuScreen();
@@ -50,7 +52,7 @@ public class ColorFillGame extends Game{
     }
 
     private void setupStage() {
-        stage = new Stage(new FitViewport(gameData.WORLD_WIDTH, gameData.WORLD_HEIGHT));
+        stage = new Stage(new FitViewport(gameData.WORLD_WIDTH(), gameData.WORLD_HEIGHT()));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -146,7 +148,6 @@ public class ColorFillGame extends Game{
             pitch = maxPitch;
         }
         pitch += 1.0f;
-        System.out.println("Pitch:" + pitch);
         playFlipSound(pitch);
         currentIter = iter;
     }

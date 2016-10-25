@@ -25,7 +25,7 @@ public class ScoreLabel extends Group {
         setTouchable(Touchable.disabled);
         addActor(textLabel);
         updateMovesText();
-        textLabel.setPosition(getX() + game.gameData.WORLD_WIDTH/2, getY());
+        textLabel.setPosition(getX() + game.gameData.WORLD_WIDTH()/2, getY());
     }
 
 

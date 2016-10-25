@@ -69,7 +69,6 @@ public class GameButton extends Group {
     private Rectangle buttonBackground;
 
     public GameButton(ColorFillGame game, String text, int fontSize, Color color){
-        System.out.println(color);
         this.game = game;
         this.fontSize = fontSize;
         buttonBackground = new Rectangle(game, -1, -1, color);
@@ -87,7 +86,7 @@ public class GameButton extends Group {
     }
 
     public float computeHeight(){
-        return fontSize*1.2f;
+        return buttonSize*0.5f;
     }
 
     public void setButtonSize(float buttonSize) {

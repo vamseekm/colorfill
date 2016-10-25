@@ -44,11 +44,11 @@ public class GameScreen extends Group {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             Color color = Color.RED;
             shapeRenderer.setColor(color.r, color.g, color.b, parentAlpha);
-            for (float x = 0; x <= game.gameData.WORLD_WIDTH; x += game.gameData.WORLD_WIDTH / 10) {
-                shapeRenderer.line(x, 0, x, game.gameData.WORLD_HEIGHT);
+            for (float x = 0; x <= game.gameData.WORLD_WIDTH(); x += game.gameData.WORLD_WIDTH() / 10) {
+                shapeRenderer.line(x, 0, x, game.gameData.WORLD_HEIGHT());
             }
-            for (float y = 0; y <= game.gameData.WORLD_HEIGHT; y += game.gameData.WORLD_HEIGHT / 10) {
-                shapeRenderer.line(0, y, game.gameData.WORLD_HEIGHT, y);
+            for (float y = 0; y <= game.gameData.WORLD_HEIGHT(); y += game.gameData.WORLD_HEIGHT() / 10) {
+                shapeRenderer.line(0, y, game.gameData.WORLD_HEIGHT(), y);
             }
             shapeRenderer.end();
             batch.begin();
@@ -76,7 +76,7 @@ public class GameScreen extends Group {
     }
 
     public void setGridPosition(Actor actor, float x, float y) {
-        actor.setPosition(x*GameData.WORLD_WIDTH, y*GameData.WORLD_HEIGHT);
+        actor.setPosition(x*GameData.WORLD_WIDTH(), y*GameData.WORLD_HEIGHT());
     }
 
     public void pause(){

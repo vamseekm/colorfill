@@ -7,9 +7,10 @@ import com.cb.colorfill.game.ColorFillGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
+		GameData.setWorldScale(0.5f);
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = (int)GameData.WORLD_WIDTH;
-		config.height = (int)GameData.WORLD_HEIGHT;
+		config.width = (int)GameData.WORLD_WIDTH();
+		config.height = (int)GameData.WORLD_HEIGHT();
         config.samples = 4;
 		new LwjglApplication(new ColorFillGame(), config);
 	}
