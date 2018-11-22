@@ -95,8 +95,10 @@ public class ColorFillGame extends Game{
         }*/
 		//Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
         Viewport viewport = stage.getViewport();
+        System.out.println(viewport);
         viewport.apply(true);
-		Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
 		Batch batch = stage.getBatch();
 		batch.begin();
 		batch.draw(bg, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
