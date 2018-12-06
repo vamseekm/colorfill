@@ -42,7 +42,8 @@ public class GameData {
     //public final Color FONT_COLOR = new Color(64*3f/255f, 64*3f/255f, 64*3.5f/255f, 1);
     public final Color FONT_COLOR = new Color(64*3f/255f, 64*3f/255f, 64*3f/255f, 1);
     //public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 255/255f, 1);
-    public final Color BG_DARK_COLOR = new Color(240/255f, 240/255f, 240/255f, 1);
+    public final Color BG_DARK_COLOR = new Color(200/255f, 200/255f, 200/255f, 1);
+    public final Color BG_BLUE_COLOR = new Color(0/255f, 0/255f, 240/255f, 1);
 
     private FreeTypeFontGenerator.FreeTypeFontParameter generateParams(float size){
         return generateParams(size, FONT_COLOR);

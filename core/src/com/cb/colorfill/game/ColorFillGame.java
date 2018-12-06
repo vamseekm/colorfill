@@ -11,7 +11,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cb.colorfill.levels.Level;
 import com.cb.colorfill.levels.classic.ClassicLevel;
@@ -24,7 +27,7 @@ import com.cb.colorfill.screens.TestScreen;
 
 public class ColorFillGame extends Game{
 
-	Stage stage;
+	Stage stage, bgStage;
 	BitmapFont font;
 	com.cb.colorfill.screens.GameScreen currentScreen;
 	public ColorUtils colorUtils;
@@ -53,6 +56,7 @@ public class ColorFillGame extends Game{
     }
 
     private void setupStage() {
+        bgStage = new Stage(new FillViewport(gameData.WORLD_WIDTH(), gameData.WORLD_HEIGHT()));
         stage = new Stage(new FitViewport(gameData.WORLD_WIDTH(), gameData.WORLD_HEIGHT()));
         Gdx.input.setInputProcessor(stage);
     }
@@ -95,34 +99,47 @@ public class ColorFillGame extends Game{
         }*/
 		//Gdx.gl.glViewport(0, 0, screenWidth, screenHeight);
         Viewport viewport = stage.getViewport();
-        System.out.println(viewport);
         viewport.apply(true);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
+        // Gdx.gl.glClearColor(250/ 255f, 250/ 255f, 250/ 255f, 1);
+        Gdx.gl.glClearColor(250/ 255f, 0f, 0f, 1);
+        /*
 		Batch batch = stage.getBatch();
 		batch.begin();
-		batch.draw(bg, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+		batch.draw(bg, 0, 0, viewport.getScreenWidth(), viewport.getScreenHeight());
 		batch.end();
+		*/
 	}
 
 	@Override
 	public void render() {
         super.render();
 		clearBG();
-		stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
+
+        float delta = Gdx.graphics.getDeltaTime();
+        bgStage.act(delta);
+        Viewport bgViewport = bgStage.getViewport();
+        bgViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        bgStage.getBatch().begin();
+        bgStage.getBatch().draw(this.bg, 0, 0, bgViewport.getWorldWidth(), bgViewport.getWorldHeight());
+        bgStage.getBatch().end();
+        bgStage.draw();
+
+        stage.getViewport().update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), true);
         //int screenWidth = (int)gameData.WORLD_WIDTH();
         //int screenHeight = (int)gameData.WORLD_HEIGHT();
         //stage.getViewport().update(screenWidth, screenHeight, true);
         stage.getViewport().apply(true);
-		float delta = Gdx.graphics.getDeltaTime();
-		stage.act(delta);
+
+        stage.act(delta);
 		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-        stage.getViewport().apply(true);
-		//stage.getViewport().update(width, height, true);
+        bgStage.getViewport().update(width, height, true);
+        // stage.getViewport().apply(true);
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
